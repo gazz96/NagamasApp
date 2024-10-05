@@ -23,6 +23,8 @@ import RegisterScreen from './screen/RegisterScreen';
 import CartScreen from './screen/CartScreen';
 import HelpScreen from './screen/HelpScreen';
 import ProvinceScreen from './screen/ProvinceScreen';
+import AdminExpeditionListScreen from './screen/AdminExpeditionListScreen';
+import AdminExpeditionFormScreen from './screen/AdminExpeditionFormScreen';
 
 
 const Stack = createStackNavigator();
@@ -81,7 +83,7 @@ const HomeTab = () => {
     )}>
       <Tab.Screen
         name="Tab.Home"
-        component={HomeScreen}
+        component={AdminExpeditionListScreen}
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: ({ color }) => (
@@ -133,7 +135,9 @@ function App() {
       <Stack.Navigator screenOptions={{
         headerShown: false
       }}>
-        <Stack.Screen name="Main Home" component={HomeTab}/>
+        <Stack.Screen name="Main Home" component={AdminExpeditionListScreen}/>
+        <Stack.Screen name="Admin Expedition List" component={AdminExpeditionListScreen}/>
+        <Stack.Screen name="Admin Expedition Form" component={AdminExpeditionFormScreen}/>
         {/* <Stack.Screen name="Profile" component={ProfileScreen}/> */}
       </Stack.Navigator>
     </NavigationContainer>
