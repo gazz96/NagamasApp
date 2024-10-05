@@ -19,6 +19,12 @@ import {
     configureFonts,
   } from 'react-native-paper';
 
+import axios from 'axios'
+
+const api = axios.create({
+    baseURL: 'http://nagamas-api.test',
+});
+
 const Main = () => {
     return (
         <PaperProvider theme={MD3Theme}>

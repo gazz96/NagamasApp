@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import ScreenWrapper from '../components/ScreenWrapper'
-import { Appbar, TextInput } from 'react-native-paper'
+import { Appbar, TextInput, Button, List  } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import Gap from '../components/Gap'
 
@@ -23,6 +23,13 @@ const RegisterScreen = () => {
                 <Gap height={8}/>
                 <TextInput
                     mode="flat"
+                    label="Nomor Whatsapp"
+                    right={<TextInput.Affix text="/15" />}
+                    />
+                
+                <Gap height={8}/>
+                <TextInput
+                    mode="flat"
                     label="Alamat"
                     right={<TextInput.Affix text="/15" />}
                     />
@@ -38,16 +45,25 @@ const RegisterScreen = () => {
                 <Gap height={8}/>
                 <TextInput
                     mode="flat"
-                    label="Alamat"
+                    label="Kota/Kabupaten"
                     right={<TextInput.Affix text="/15" />}
                     />
                 
                 <Gap height={8}/>
                 <TextInput
                     mode="flat"
-                    label="Alamat"
+                    label="Kecamatan"
                     right={<TextInput.Affix text="/15" />}
                     />
+
+                <Gap height={8}/>
+                <TextInput
+                    mode="flat"
+                    label="Kelurahan"
+                    right={<TextInput.Affix text="/15" />}
+                    />
+                <Gap height={8}/>
+                <Button mode="contained">Daftar</Button>
             </View>
         </ScreenWrapper>
     )

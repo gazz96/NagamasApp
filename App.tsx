@@ -23,6 +23,7 @@ import RegisterScreen from './screen/RegisterScreen';
 import CartScreen from './screen/CartScreen';
 import HelpScreen from './screen/HelpScreen';
 import ProvinceScreen from './screen/ProvinceScreen';
+import FormExpeditionScreen from './screen/FormExpeditionScreen';
 
 
 const Stack = createStackNavigator();
@@ -46,6 +47,7 @@ const ProfileStackScreen = () => {
 const HomeTab = () => {
   return (
     <Tab.Navigator
+    initialRouteName='Tab.Home'
     screenOptions={{
       headerShown: false,
     }}
@@ -79,9 +81,10 @@ const HomeTab = () => {
         getLabelText={({ route }) => descriptors[route.key].options.tabBarLabel}
       />
     )}>
+
       <Tab.Screen
         name="Tab.Home"
-        component={HomeScreen}
+        component={FormExpeditionScreen}
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: ({ color }) => (
