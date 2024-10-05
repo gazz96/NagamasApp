@@ -47,9 +47,7 @@ const AdminExpeditionListScreen = () => {
                     <Appbar.BackAction onPress={() => navigation.goBack()} />
                     <Appbar.Content title="Expedition Data" />
                     <Appbar.Action icon="plus" onPress={() => {
-                        navigation.navigate('Admin Expedition Form', {
-                            refresh: refreshPage
-                        });
+                        navigation.navigate('Admin Expedition Form');
                     }}/>
                 </Appbar.Header>
 
@@ -81,8 +79,7 @@ const AdminExpeditionListScreen = () => {
                                             <DataTable.Cell>
                                                 <Button onPress={() => {
                                                     navigation.navigate('Admin Expedition Form', {
-                                                        row: row, 
-                                                        refresh: refreshPage
+                                                        row: row
                                                     })
                                                 }}>
                                                     Edit
