@@ -1,8 +1,8 @@
 import Api from "../components/Api"
 
-const ExpeditionAction = {
+const ProductAction = {
     list: async(data: object = {}) =>  {
-        const response = await Api.get('/expeditions', {
+        const response = await Api.get('/products', {
             params: data
         })
 
@@ -10,14 +10,14 @@ const ExpeditionAction = {
     },
 
     edit: async(id: string) => {
-        const response = await Api.get(`/expeditions/${id}/edit`);
+        const response = await Api.get(`/products/${id}/edit`);
         return response.data;
     },
 
     save: async(data: object = {}) => {
-        const response = await Api.post('/expeditions', data);
+        const response = await Api.post('/products', data);
         return response.data;
     }
 }
 
-export default ExpeditionAction;
+export default ProductAction;
