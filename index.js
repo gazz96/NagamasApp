@@ -11,12 +11,38 @@ import {
 } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import currency from 'currency.js';
+import { Text, View } from 'react-native';
+
+const toastConfig = {
+    tomatoToast: ({ text1, props }) => (
+        <View style={{ height: 60, width: '100%', backgroundColor: 'tomato' }}>
+            <Text>{text1}</Text>
+            <Text>{props.uuid}</Text>
+        </View>
+    ),
+    snackBarToast: ({ text1, props}) => (
+        <View style={{
+            paddingHorizontal: 16, 
+            shadowColor: '#171717',
+            shadowOffset: {width: -2, height: 4},
+            shadowOpacity: 0.2,
+            shadowRadius: 3
+            }}>
+            <View style={{  
+                height: 60, width: '100%', backgroundColor: '#fff', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 16, 
+                borderRadius: 8 }}>
+                <Text style={{ color: '#222' }}>{text1}</Text>
+                <Text onPress={props.onPress} style={{color: 'red'}}>{props.onPressText}</Text>
+            </View>
+        </View>
+    )
+}
 
 const Main = () => {
     return (
         <PaperProvider>
             <App />
-            <Toast />
+            <Toast config={toastConfig} visibilityTime={1000}/>
         </PaperProvider>
     );
 }

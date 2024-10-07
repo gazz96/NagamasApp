@@ -99,6 +99,14 @@ const ProfileScreen = () => {
             ? <ActivityIndicator />
             :
             <>
+
+              <TextInput
+                    mode="flat"
+                    label="Nama"
+                    right={<TextInput.Affix text="/15" />}
+                    onChangeText={(text) => handleChangeInput('mm_name', text)}
+                />
+                <Gap height={8} />
               <TextInput
                 mode="flat"
                 label="Provinsi"

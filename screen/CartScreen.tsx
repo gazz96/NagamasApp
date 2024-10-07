@@ -30,12 +30,74 @@ const CartScreen = () => {
     }
   }
 
+  const addToCart = async (productId) => {
+    setIsLoading(true)
+    try {
+      await OrderAction.addToCart(productId);
+      await getCarts();
+
+    }
+    catch (error) {
+      if (error.response) {
+        console.log('error.esponse', error.response);
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        console.log('error.request');
+        console.log(error.request);
+      } else {
+        console.log('error.message');
+        console.log('Error', error.message);
+      }
+    }
+    finally {
+      setIsLoading(false);
+    }
+  }
+
+  const subtractFromCart = async (productId) => {
+    setIsLoading(true)
+    try {
+      await OrderAction.subtractFromCart(productId);
+      await getCarts();
+    }
+    catch (error) {
+      if (error.response) {
+        console.log('error.esponse', error.response);
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        console.log('error.request');
+        console.log(error.request);
+      } else {
+        console.log('error.message');
+        console.log('Error', error.message);
+      }
+    }
+    finally {
+      setIsLoading(false);
+    }
+  }
+
+  // Function to update quantity of a specific item
+  const updateItemQty = (itemId, newQty) => {
+    // Update the item with new qty in the items array
+    const updatedItems = (carts?.items ?? []).map(item =>
+      item.item_id === itemId ? { ...item, item_qty: newQty } : item
+    );
+    
+    // Update the carts state with updated items
+    setCarts({ ...carts, items: updatedItems });
+  };
+
   useEffect(() => {
     if (isFocused) {
       getCarts()
     }
 
-  }, [])
+  }, [isFocused])
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -49,15 +111,18 @@ const CartScreen = () => {
         <View style={{ paddingHorizontal: 16 }}>
           {
             isLoading ? <ActivityIndicator /> :
-              (carts.items).map((item) => {
+              (carts?.items ?? []).map((item, index) => {
                 return (
-                  <View style={{ marginBottom: 16, borderBottomColor: '#eee', borderBottomWidth: 1, paddingBottom: 16, flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <View key={item.item_id} style={{ marginBottom: 16, borderBottomColor: '#eee', borderBottomWidth: 1, paddingBottom: 16, flexDirection: 'row', justifyContent: 'space-between' }}>
                     <View>
                       <Text>{item.item_name}</Text>
                       <Text style={{ color: '#222', fontWeight: 'bold' }}>{Rp(item.amount)}</Text>
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                      <TouchableOpacity style={{ width: 30, height: 30, backgroundColor: '#eee', borderRadius: 30, alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
+                      <TouchableOpacity style={{ width: 30, height: 30, backgroundColor: '#eee', borderRadius: 30, alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}
+                        onPress={() => {
+                          subtractFromCart(item.item_id)
+                        }}>
                         <Text>
                           <Icon source="minus" />
                         </Text>
@@ -65,8 +130,16 @@ const CartScreen = () => {
 
                       <TextInput
                         style={{ backgroundColor: '#fff' }}
-                        value={(item.item_qty).toString()} />
-                      <TouchableOpacity style={{ width: 30, height: 30, backgroundColor: '#eee', borderRadius: 30, alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
+                        value={(item.item_qty).toString()} 
+                        keyboardType='numeric'
+                        onChangeText={(text) => {
+                          updateItemQty(item.item_id, parseInt(text))
+                        }}/>
+
+                      <TouchableOpacity style={{ width: 30, height: 30, backgroundColor: '#eee', borderRadius: 30, alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}
+                        onPress={() => {
+                          addToCart(item.item_id)
+                        }}>
                         <Icon source="plus" />
                       </TouchableOpacity>
                     </View>
@@ -82,19 +155,27 @@ const CartScreen = () => {
         <View>
           <Text>Total Harga</Text>
           {
-            isLoading 
-              ? <ActivityIndicator/>
+            isLoading
+              ? <ActivityIndicator />
               : <Text style={{ fontWeight: 'bold' }}>
-                  { Rp((carts.items).reduce((a, b) => parseInt(a.amount) + parseInt(b.amount))) }
+                {
+                  carts?.items ? Rp((carts.items).reduce((a, b) => parseInt(a.amount) + parseInt(b.amount)))
+                    : Rp(0)
+                }
               </Text>
           }
         </View>
-        
+
         {
-            isLoading 
-              ? <ActivityIndicator/> 
-              :
-              <Button mode="contained">Beli ({(carts.items).reduce((a, b) => parseInt(a.item_qty) + parseInt(b.item_qty))})</Button>
+          isLoading
+            ? <ActivityIndicator />
+            :
+            <Button mode="contained">Beli (
+              {
+                carts?.items ? (carts?.items ?? []).reduce((a, b) => parseInt(a.item_qty) + parseInt(b.item_qty))
+                  : 0
+              }
+              )</Button>
         }
       </View>
     </SafeAreaView>

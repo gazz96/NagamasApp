@@ -29,11 +29,12 @@ const LoginScreen = () => {
         setIsLoading(true);
 
         try {
+            console.log('formData', form);
             const formData = new FormData();
             formData.append('mm_phone', form.mm_phone);
             formData.append('mm_pass', form.mm_pass);
             const response = await AuthAction.login(formData);
-            //AsyncStorage.setItem('userToken', response.data.token);
+            AsyncStorage.setItem('userToken', response.data.token);
             console.log('response', response)
             Toast.show({
                 type: 'success',
@@ -83,7 +84,7 @@ const LoginScreen = () => {
                     mode="flat"
                     label="Password"
                     placeholder="Masukan Password"
-                    onChange={(text) => handleChangeInput('mm_pass', text)}
+                    onChangeText={(text) => handleChangeInput('mm_pass', text)}
                     value={form.mm_pass}
                     secureTextEntry={true}
                     />

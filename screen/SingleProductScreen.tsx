@@ -37,8 +37,16 @@ const SingleProductScreen = () => {
             const response = await OrderAction.addToCart(product?.id);
             console.log('response',response);
             Toast.show({
-                type: 'success',
-                text1: 'Berhasil dimasukan ke keranjang'
+                position: 'bottom',
+                type: 'snackBarToast',
+                text1: 'Berhasil dimasukan ke keranjang',
+                props: {
+                    onPressText: 'Lihat',
+                    onPress: () => {
+                        navigation.navigate('Tab.Cart');
+                    }
+                }
+                
             });
         }
         catch(error) {

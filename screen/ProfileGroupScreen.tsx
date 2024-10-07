@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Appbar, Icon, Text } from 'react-native-paper'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { useNavigation } from '@react-navigation/native'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
 import ScreenWrapper from '../components/ScreenWrapper'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
@@ -11,8 +11,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 const ProfileGroupScreen = () => {
 
     const [token, setToken] = useState('');
-
+    const [isLoading, setIsLoading] = useState(true);
+    const isFocused = useIsFocused();
     const getToken = async () => {
+        setIsLoading(true);
         try {
             const getUserToken = await AsyncStorage.getItem('userToken');
             console.log('getUserToken', getUserToken);
@@ -21,16 +23,33 @@ const ProfileGroupScreen = () => {
         catch (error) {
 
         }
+        finally {
+            setIsLoading(false);
+        }
     }
 
     const userLogout = async() => {
-        await AsyncStorage.removeItem('userToken');
-        navigation.navigate('Profile Group');
+
+        setIsLoading(true)
+        try {
+            await AsyncStorage.removeItem('userToken');
+            setToken('')
+            navigation.navigate('Profile Group');
+        }
+        catch(error) {
+
+        }
+        finally {
+            setIsLoading(false);
+        }
     }
 
     useEffect(() => {
-        getToken()
-    }, [token])
+        if(isFocused) {
+            getToken()
+        }
+       
+    }, [token, isFocused])
 
     const navigation = useNavigation();
     return (

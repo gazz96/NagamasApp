@@ -8,7 +8,7 @@ const getUserToken = async () => {
 
 const Api = axios.create({
     baseURL: 'https://buatpc.com/nagamas/api',
-    timeout: 1000,
+    timeout: 10000,
     headers: {
         "Content-Type": "multipart/form-data"
     }

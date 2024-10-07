@@ -44,6 +44,18 @@ const OrderAction = {
             } 
         });
         return response.data;
+    },
+    subtractFromCart: async(productId) => {
+        const userToken = await AsyncStorage.getItem('userToken')
+        const response = await Api.post('/cart/substract', {
+            product_id: productId,  
+        }, 
+        {
+            headers: {
+                'x-token': userToken
+            } 
+        });
+        return response.data;
     }
 }
 
