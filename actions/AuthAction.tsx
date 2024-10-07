@@ -13,11 +13,23 @@ const AuthAction = {
     },
     me: async() => {
         const token = await AsyncStorage.getItem('userToken');
-        const response = await Api.post('/me', {
-            token: token
+        const response = await Api.post('/me', {}, {
+            headers: {
+                'x-token': token
+            }
         });
         return response.data;
-    }
+    },
+
+    updateProfile: async(data: object = {}) => {
+        const token = await AsyncStorage.getItem('userToken');
+        const response = await Api.post('/me/update', data, {
+            headers: {
+                'x-token': token
+            }
+        });
+        return response.data;
+    } 
 }
 
 export default AuthAction;

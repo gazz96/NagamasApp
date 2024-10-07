@@ -6,16 +6,17 @@ import App from '../App'
 import { useNavigation } from '@react-navigation/native'
 import Gap from '../components/Gap'
 import AuthAction from '../actions/AuthAction'
+import Toast from 'react-native-toast-message'
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
 
   const [user, setUser] = useState({
-    id: "",
+    //id: "",
     mm_name: "",
     mm_gender: "",
-    mm_phone: "",
+    //mm_phone: "",
     mm_prov: 0,
     mm_kelurahan: 0,
     mm_address: "",
@@ -39,7 +40,7 @@ const ProfileScreen = () => {
 
   const handleChangeInput = (field: string, value: string) => {
     setUser({
-      ...form,
+      ...user,
       [field]: value
     })
   }
@@ -78,6 +79,43 @@ const ProfileScreen = () => {
     }
   }
 
+  const updateProfile = async() => {
+    setIsLoading(true)
+    try {
+      const formData = new FormData();
+      formData.append('mm_name', user.mm_name);
+      formData.append('mm_prov', user.province?.id);
+      formData.append('mm_kelurahan', user.village?.id);
+      formData.append('mm_address', user.mm_address);
+      const response = await AuthAction.updateProfile(formData);
+      await getPersonalInfo();
+
+      console.log('updateProfile.response', response);
+      Toast.show({
+        text1: 'Berhasil disimpan'
+      })
+      
+    }
+    catch(error) {
+      if (error.response) {
+               
+        console.log('error.esponse');
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+    } else if (error.request) {
+        console.log('error.request');
+        console.log(error.request);
+    } else {
+        console.log('error.message');
+        console.log('Error', error.message);
+    }
+    }
+    finally {
+      setIsLoading(false);
+    }
+  }
+
   useEffect(() => {
     getPersonalInfo()
   }, [])
@@ -103,8 +141,8 @@ const ProfileScreen = () => {
               <TextInput
                     mode="flat"
                     label="Nama"
-                    right={<TextInput.Affix text="/15" />}
                     onChangeText={(text) => handleChangeInput('mm_name', text)}
+                    value={user.mm_name}
                 />
                 <Gap height={8} />
               <TextInput
@@ -137,7 +175,7 @@ const ProfileScreen = () => {
 
 
               <Gap height={8} />
-              <Button mode="contained" loading={isLoading}>Simpan</Button>
+              <Button mode="contained" onPress={updateProfile} loading={isLoading}>Simpan</Button>
               <Gap height={16} />
             </>
         }
