@@ -5,7 +5,7 @@
  * @format
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Text, BottomNavigation } from 'react-native-paper';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -25,22 +25,38 @@ import HelpScreen from './screen/HelpScreen';
 import ProvinceScreen from './screen/ProvinceScreen';
 import AdminExpeditionListScreen from './screen/AdminExpeditionListScreen';
 import AdminExpeditionFormScreen from './screen/AdminExpeditionFormScreen';
-
+import CategoryProductScreen from './screen/CategoryProductScreen';
+import VillageScreen from './screen/VillageScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import SingleProductScreen from './screen/SingleProductScreen';
 
 const Stack = createStackNavigator();
 const ProfileStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const ProfileStackScreen = () => {
+
+
+  useEffect(() => {
+
+  })
+
+
   return (
     <ProfileStack.Navigator screenOptions={{
       headerShown: false
     }}>
-      <ProfileStack.Screen name="Profile Group" component={ProfileGroupScreen}/>
-      <ProfileStack.Screen name="Profile" component={ProfileScreen}/>
-      <ProfileStack.Screen name="Login" component={LoginScreen}/>
-      <ProfileStack.Screen name="Register" component={RegisterScreen}/>
-      <ProfileStack.Screen name="Select Province" component={ProvinceScreen}/>
+
+
+      <ProfileStack.Screen name="Profile Group" component={ProfileGroupScreen} />
+      <ProfileStack.Screen name="Profile" component={ProfileScreen} />
+
+      <ProfileStack.Screen name="Login" component={LoginScreen} />
+      <ProfileStack.Screen name="Register" component={RegisterScreen} />
+
+
+      <ProfileStack.Screen name="Select Province" component={ProvinceScreen} />
+      <ProfileStack.Screen name="Select Village" component={VillageScreen} />
     </ProfileStack.Navigator>
   )
 }
@@ -48,44 +64,44 @@ const ProfileStackScreen = () => {
 const HomeTab = () => {
   return (
     <Tab.Navigator
-    initialRouteName='Tab.Home'
-    screenOptions={{
-      headerShown: false,
-    }}
-    tabBar={({ navigation, state, descriptors, insets }) => (
-      <BottomNavigation.Bar
-        navigationState={state}
-        safeAreaInsets={insets}
-        onTabPress={({ route, preventDefault }) => {
-          const event = navigation.emit({
-            type: 'tabPress',
-            target: route.key,
-            canPreventDefault: true,
-          });
-
-          if (event.defaultPrevented) {
-            preventDefault();
-          } else {
-            navigation.dispatch({
-              ...CommonActions.navigate(route.name, route.params),
-              target: state.key,
+      initialRouteName='Tab.Home'
+      screenOptions={{
+        headerShown: false,
+      }}
+      tabBar={({ navigation, state, descriptors, insets }) => (
+        <BottomNavigation.Bar
+          navigationState={state}
+          safeAreaInsets={insets}
+          onTabPress={({ route, preventDefault }) => {
+            const event = navigation.emit({
+              type: 'tabPress',
+              target: route.key,
+              canPreventDefault: true,
             });
+
+            if (event.defaultPrevented) {
+              preventDefault();
+            } else {
+              navigation.dispatch({
+                ...CommonActions.navigate(route.name, route.params),
+                target: state.key,
+              });
+            }
+          }}
+          renderIcon={({ route, focused, color }) =>
+            descriptors[route.key].options.tabBarIcon?.({
+              focused,
+              color,
+              size: 24,
+            }) || null
           }
-        }}
-        renderIcon={({ route, focused, color }) =>
-          descriptors[route.key].options.tabBarIcon?.({
-            focused,
-            color,
-            size: 24,
-          }) || null
-        }
-        getLabelText={({ route }) => descriptors[route.key].options.tabBarLabel}
-      />
-    )}>
+          getLabelText={({ route }) => descriptors[route.key].options.tabBarLabel}
+        />
+      )}>
 
       <Tab.Screen
         name="Tab.Home"
-        component={AdminExpeditionListScreen}
+        component={HomeScreen}
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: ({ color }) => (
@@ -137,9 +153,13 @@ function App() {
       <Stack.Navigator screenOptions={{
         headerShown: false
       }}>
-        <Stack.Screen name="Main Home" component={AdminExpeditionListScreen}/>
-        <Stack.Screen name="Admin Expedition List" component={AdminExpeditionListScreen}/>
-        <Stack.Screen name="Admin Expedition Form" component={AdminExpeditionFormScreen}/>
+        <Stack.Screen name="Main Home" component={HomeTab} />
+        <Stack.Screen name="Category Product Screen" component={CategoryProductScreen} />
+        <Stack.Screen name="Single Product" component={SingleProductScreen} />
+
+        {/* ADMIN */}
+        <Stack.Screen name="Admin Expedition List" component={AdminExpeditionListScreen} />
+        <Stack.Screen name="Admin Expedition Form" component={AdminExpeditionFormScreen} />
         {/* <Stack.Screen name="Profile" component={ProfileScreen}/> */}
       </Stack.Navigator>
     </NavigationContainer>

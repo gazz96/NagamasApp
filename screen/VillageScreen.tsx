@@ -7,7 +7,7 @@ import WilayahAction from '../actions/WilayahAction'
 import Gap from '../components/Gap'
 
 
-const ProvinceScreen = () => {
+const VillageScreen = () => {
 
     const navigation = useNavigation();
     const [searchQuery, setSearchQuery] = useState('');
@@ -15,10 +15,11 @@ const ProvinceScreen = () => {
     const [isLoading, setIsLoading] = useState(true);
     const route = useRoute();
 
-    const getProvinces = async () => {
+    const getVillages = async () => {
         setIsLoading(true);
         try {
-            const response = await WilayahAction.getProvince({
+            const response = await WilayahAction.getVillage({
+                province_id: route.params?.provinceId,
                 s: searchQuery
             });
             setRows(response);
@@ -31,16 +32,16 @@ const ProvinceScreen = () => {
         }
     }
 
-    const handleProvinceSelect = (province) => {
+    const handleVillageSelect = (village) => {
         // Pass the selected province back to RegisterScreen
-        if (route.params?.onSelect) {
-            route.params.onSelect(province);
+        if (route.params?.onSelectVillage) {
+            route.params.onSelectVillage(village);
         }
         navigation.goBack();  // Go back to Register screen
     };
 
     useEffect(() => {
-        getProvinces();
+        getVillages();
     }, [searchQuery])
 
     return (
@@ -66,7 +67,7 @@ const ProvinceScreen = () => {
                     isLoading ? <ActivityIndicator/> :
                         rows.map((row, index) => {
                             return (
-                                <List.Item title={row.name} key={row.id} onPress={() => handleProvinceSelect(row)}/>
+                                <List.Item title={row.full_name} titleNumberOfLines={2}  key={row.id} onPress={() => handleVillageSelect(row)}/>
                             )
                         })
                 }
@@ -77,6 +78,6 @@ const ProvinceScreen = () => {
     )
 }
 
-export default ProvinceScreen
+export default VillageScreen
 
 const styles = StyleSheet.create({})

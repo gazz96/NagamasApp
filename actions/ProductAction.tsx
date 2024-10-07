@@ -5,7 +5,6 @@ const ProductAction = {
         const response = await Api.get('/products', {
             params: data
         })
-
         return response.data;
     },
 

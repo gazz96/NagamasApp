@@ -4,10 +4,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import ScreenWrapper from "../components/ScreenWrapper";
 import { ScrollView } from "react-native-gesture-handler";
 import Gap from "../components/Gap";
+import CategoryProductBlock from "../components/CategoryProductBlock";
 
 const {width} = Dimensions.get('window');
 
 const HomeScreen = () => {
+
+    
+
     return (
         <SafeAreaView style={{flex: 1}}>
             <View style={{paddingHorizontal: 16, paddingVertical: 8, backgroundColor: '#fff'}}>
@@ -42,131 +46,10 @@ const HomeScreen = () => {
                 <Gap height={24}/>
                 <Gap height={24}/>
 
-                <View style={{ paddingHorizontal: 16, flex: 1 }}>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                        <Text style={{fontWeight: 'bold', color: '#222'}}>StarGold</Text>
-                        <Text style={{color: 'red', fontSize: 10, fontWeight: 'bold'}}>Lihat Semua</Text>
-                    </View>
-                    <Gap height={16}/>
-                    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{flex: 1}}>
-                        <View style={styles.productItem}>
-                            <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                                <View style={styles.imageProductWrrapper}>
-                                    <Image source={require('../assets/banner-01.jpg')} style={styles.imageProduct}/>
-                                </View>
-                            </View>
-                            <View>
-                                <Text style={styles.productTitle}>StarGold 0.1gr</Text>
-                                <Text style={styles.productPrice}>Rp. 169,000</Text>
-                                <Text style={styles.productStock}>Terjual > 100</Text>
-                            </View>
-                        </View>
-
-                        <View style={styles.productItem}>
-                            <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                                <View style={styles.imageProductWrrapper}>
-                                    <Image source={require('../assets/banner-01.jpg')} style={styles.imageProduct}/>
-                                </View>
-                            </View>
-                            <View>
-                                <Text style={styles.productTitle}>StarGold 0.1gr</Text>
-                                <Text style={styles.productPrice}>Rp. 169,000</Text>
-                                <Text style={styles.productStock}>Terjual > 100</Text>
-                            </View>
-                        </View>
-
-                        <View style={styles.productItem}>
-                            <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                                <View style={styles.imageProductWrrapper}>
-                                    <Image source={require('../assets/banner-01.jpg')} style={styles.imageProduct}/>
-                                </View>
-                            </View>
-                            <View>
-                                <Text style={styles.productTitle}>StarGold 0.1gr</Text>
-                                <Text style={styles.productPrice}>Rp. 169,000</Text>
-                                <Text style={styles.productStock}>Terjual > 100</Text>
-                            </View>
-                        </View>
-
-                        <View style={styles.productItem}>
-                            <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                                <View style={styles.imageProductWrrapper}>
-                                    <Image source={require('../assets/banner-01.jpg')} style={styles.imageProduct}/>
-                                </View>
-                            </View>
-                            <View>
-                                <Text style={styles.productTitle}>StarGold 0.1gr</Text>
-                                <Text style={styles.productPrice}>Rp. 169,000</Text>
-                                <Text style={styles.productStock}>Terjual > 100</Text>
-                            </View>
-                        </View>
-                    </ScrollView>
-                </View>
+                <CategoryProductBlock name="StarGold"/>
 
                 <Gap height={24}/>
 
-                <View style={{ paddingHorizontal: 16, flex: 1 }}>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                        <Text style={{fontWeight: 'bold', color: '#222'}}>StarGold Custom</Text>
-                        <Text style={{color: 'red', fontSize: 10, fontWeight: 'bold'}}>Lihat Semua</Text>
-                    </View>
-                    <Gap height={16}/>
-                    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{flex: 1}}>
-                        <View style={styles.productItem}>
-                            <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                                <View style={styles.imageProductWrrapper}>
-                                    <Image source={require('../assets/banner-01.jpg')} style={styles.imageProduct}/>
-                                </View>
-                            </View>
-                            <View>
-                                <Text style={styles.productTitle}>StarGold Custom Series Idul Fitri</Text>
-                                <Text style={styles.productPrice}>Rp. 169,000</Text>
-                                <Text style={styles.productStock}>Terjual > 100</Text>
-                            </View>
-                        </View>
-
-                        <View style={styles.productItem}>
-                            <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                                <View style={styles.imageProductWrrapper}>
-                                    <Image source={require('../assets/banner-01.jpg')} style={styles.imageProduct}/>
-                                </View>
-                            </View>
-                            <View>
-                                <Text style={styles.productTitle}>StarGold Custom Series Imlek</Text>
-                                <Text style={styles.productPrice}>Rp. 169,000</Text>
-                                <Text style={styles.productStock}>Terjual > 100</Text>
-                            </View>
-                        </View>
-
-                        <View style={styles.productItem}>
-                            <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                                <View style={styles.imageProductWrrapper}>
-                                    <Image source={require('../assets/banner-01.jpg')} style={styles.imageProduct}/>
-                                </View>
-                            </View>
-                            <View>
-                                <Text style={styles.productTitle}>StarGold Custom Series Congratulation</Text>
-                                <Text style={styles.productPrice}>Rp. 169,000</Text>
-                                <Text style={styles.productStock}>Terjual > 100</Text>
-                            </View>
-                        </View>
-
-                        <View style={styles.productItem}>
-                            <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                                <View style={styles.imageProductWrrapper}>
-                                    <Image source={require('../assets/banner-01.jpg')} style={styles.imageProduct}/>
-                                </View>
-                            </View>
-                            <View>
-                                <Text style={styles.productTitle}>StarGold Custom Series Thankyou</Text>
-                                <Text style={styles.productPrice}>Rp. 169,000</Text>
-                                <Text style={styles.productStock}>Terjual > 100</Text>
-                            </View>
-                        </View>
-                    </ScrollView>
-                </View>
-
-                    
 
             </ScreenWrapper>
         </SafeAreaView>

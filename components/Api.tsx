@@ -2,13 +2,16 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-const getUserToken = async() => {
+const getUserToken = async () => {
     return await AsyncStorage.getItem('userToken');
 }
 
-const Api  =  axios.create({
+const Api = axios.create({
     baseURL: 'https://buatpc.com/nagamas/api',
     timeout: 1000,
+    headers: {
+        "Content-Type": "multipart/form-data"
+    }
 });
 
 export default Api;
