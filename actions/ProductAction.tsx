@@ -1,4 +1,5 @@
 import Api from "../components/Api"
+import AuthAction from "./AuthAction";
 
 const ProductAction = {
     list: async(data: object = {}) =>  {
@@ -15,6 +16,15 @@ const ProductAction = {
 
     save: async(data: object = {}) => {
         const response = await Api.post('/products', data);
+        return response.data;
+    },
+
+    upload: async(data) => {
+        const response = await Api.post('/products/upload', data, {
+            headers: {
+                'x-token': await AuthAction.getUserToken()
+            }
+        });
         return response.data;
     }
 }

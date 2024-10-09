@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 
-const ProductItem = ({ id, title, price, defaultWidth = 120 }) => {
+const ProductItem = ({ id, title, price, imageUrl, defaultWidth = 120 }) => {
     
     const navigation = useNavigation();
 
@@ -25,13 +25,17 @@ const ProductItem = ({ id, title, price, defaultWidth = 120 }) => {
                 
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                         <View style={styles.imageProductWrrapper}>
-                            <Image source={require('../assets/banner-01.jpg')} style={styles.imageProduct} />
+                            {
+                                imageUrl ? 
+                                    <Image source={{ uri: imageUrl }} style={styles.imageProduct} />
+                                    : 
+                                    <Image source={require('../assets/banner-01.jpg')} style={styles.imageProduct}/>
+                                }
                         </View>
                     </View>
                     <View>
                         <Text numberOfLines={1} style={styles.productTitle}>{title}</Text>
                         <Text style={styles.productPrice}>{price}</Text>
-                        {/* <Text style={styles.productStock}>Terjual > 100</Text> */}
                     </View>
             </TouchableOpacity>
         </View>

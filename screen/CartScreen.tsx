@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { useIsFocused, useNavigation } from '@react-navigation/native'
 import OrderAction from '../actions/OrderAction'
 import Rp from '../components/Rp'
+import AuthAction from '../actions/AuthAction'
 
 const CartScreen = () => {
 
@@ -14,13 +15,15 @@ const CartScreen = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [carts, setCarts] = useState([])
   const isFocused = useIsFocused();
+  const token = AuthAction.getUserToken();
 
   const getCarts = async () => {
+  
     setIsLoading(true)
+    
     try {
       const response = await OrderAction.cart();
-      console.log('response cart', response?.data);
-      setCarts(response?.data)
+      setCarts(response?.data?.items)
     }
     catch (error) {
       console.log('data', error);
@@ -81,22 +84,25 @@ const CartScreen = () => {
     }
   }
 
-  // Function to update quantity of a specific item
-  const updateItemQty = (itemId, newQty) => {
-    // Update the item with new qty in the items array
-    const updatedItems = (carts?.items ?? []).map(item =>
-      item.item_id === itemId ? { ...item, item_qty: newQty } : item
-    );
-    
-    // Update the carts state with updated items
-    setCarts({ ...carts, items: updatedItems });
-  };
+  const getTotal = () => {
+    let total = 0;
+    carts.map((cart) => {
+      total += parseInt(cart.amount);
+    })
+    return Rp(total);
+  }
+
+  const getQty = () => {
+    let total = 0;
+    carts.map((cart) => {
+      total += parseInt(cart.item_qty);
+    })
+    return total;
+  }
 
   useEffect(() => {
-    if (isFocused) {
-      getCarts()
-    }
 
+      getCarts()
   }, [isFocused])
 
   return (
@@ -111,7 +117,7 @@ const CartScreen = () => {
         <View style={{ paddingHorizontal: 16 }}>
           {
             isLoading ? <ActivityIndicator /> :
-              (carts?.items ?? []).map((item, index) => {
+              carts.map((item, index) => {
                 return (
                   <View key={item.item_id} style={{ marginBottom: 16, borderBottomColor: '#eee', borderBottomWidth: 1, paddingBottom: 16, flexDirection: 'row', justifyContent: 'space-between' }}>
                     <View>
@@ -133,7 +139,6 @@ const CartScreen = () => {
                         value={(item.item_qty).toString()} 
                         keyboardType='numeric'
                         onChangeText={(text) => {
-                          updateItemQty(item.item_id, parseInt(text))
                         }}/>
 
                       <TouchableOpacity style={{ width: 30, height: 30, backgroundColor: '#eee', borderRadius: 30, alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}
@@ -159,8 +164,7 @@ const CartScreen = () => {
               ? <ActivityIndicator />
               : <Text style={{ fontWeight: 'bold' }}>
                 {
-                  carts?.items ? Rp((carts.items).reduce((a, b) => parseInt(a.amount) + parseInt(b.amount)))
-                    : Rp(0)
+                  getTotal()
                 }
               </Text>
           }
@@ -170,12 +174,8 @@ const CartScreen = () => {
           isLoading
             ? <ActivityIndicator />
             :
-            <Button mode="contained">Beli (
-              {
-                carts?.items ? (carts?.items ?? []).reduce((a, b) => parseInt(a.item_qty) + parseInt(b.item_qty))
-                  : 0
-              }
-              )</Button>
+            <Button mode="contained">Beli ({getQty()})
+            </Button>
         }
       </View>
     </SafeAreaView>

@@ -5,12 +5,18 @@ import ScreenWrapper from "../components/ScreenWrapper";
 import { ScrollView } from "react-native-gesture-handler";
 import Gap from "../components/Gap";
 import CategoryProductBlock from "../components/CategoryProductBlock";
+import { useIsFocused } from "@react-navigation/native";
+import { useEffect } from "react";
 
 const {width} = Dimensions.get('window');
 
 const HomeScreen = () => {
 
+    const isFocused = useIsFocused();
     
+    useEffect(() => {
+
+    }, [isFocused])
 
     return (
         <SafeAreaView style={{flex: 1}}>

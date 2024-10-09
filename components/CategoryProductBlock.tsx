@@ -7,6 +7,7 @@ import { ActivityIndicator } from 'react-native-paper'
 import ProductItem from './ProductItem'
 import Rp from './Rp'
 import { useNavigation } from '@react-navigation/native'
+import BaseUrl from '../actions/BaseUrl'
 
 
 
@@ -41,6 +42,7 @@ const CategoryProductBlock = ({ name = "", postsPerPage = 7 }) => {
                     <View style={{marginRight: 16}} key={row.id}>
                         <ProductItem 
                             id={row.id}
+                            imageUrl={BaseUrl(row.item_img_location_1)}
                             title={row.item_name} 
                             price={Rp(row.item_price_sell)} 
                             />

@@ -1,27 +1,36 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 
 import React, { useEffect, useState } from 'react'
-import { Appbar, Icon, Text } from 'react-native-paper'
+import { ActivityIndicator, Appbar, Icon, Text } from 'react-native-paper'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useIsFocused, useNavigation } from '@react-navigation/native'
 import ScreenWrapper from '../components/ScreenWrapper'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import AuthAction from '../actions/AuthAction'
 
 
 const ProfileGroupScreen = () => {
 
-    const [token, setToken] = useState('');
+    const navigation = useNavigation();
     const [isLoading, setIsLoading] = useState(true);
+
+    const [user, setUser] = useState({
+        mm_name: "",
+        mm_phone: "",
+        mm_role: "subscriber",
+        mm_token: ""
+    });
+
     const isFocused = useIsFocused();
     const getToken = async () => {
         setIsLoading(true);
         try {
-            const getUserToken = await AsyncStorage.getItem('userToken');
-            console.log('getUserToken', getUserToken);
-            setToken(getUserToken);
+            const response = await AuthAction.me();
+            console.log('response', response);
+            setUser(response?.me)
         }
         catch (error) {
-
+            console.log('error', error)
         }
         finally {
             setIsLoading(false);
@@ -37,7 +46,7 @@ const ProfileGroupScreen = () => {
             navigation.navigate('Profile Group');
         }
         catch(error) {
-
+            
         }
         finally {
             setIsLoading(false);
@@ -45,14 +54,18 @@ const ProfileGroupScreen = () => {
     }
 
     useEffect(() => {
-        if(isFocused) {
-            getToken()
-        }
-       
-    }, [token, isFocused])
+        getToken()
+    }, [isFocused])
 
-    const navigation = useNavigation();
+    if(isLoading)
+    {
+        return <ActivityIndicator/>
+    }
+
     return (
+
+        
+
         <ScreenWrapper>
             <Appbar.Header>
                 <Appbar.Content title="Profile" titleStyle={{
@@ -63,8 +76,22 @@ const ProfileGroupScreen = () => {
             <View style={{ paddingLeft: 16, paddingRight: 15 }}>
 
                 {
-                    token ? 
+                    user.mm_token ? 
                         <>
+                            {
+                                user.mm_role == 'admin' ? 
+                                (<>
+                                    <TouchableOpacity style={styles.listItem} onPress={() => {
+                                        navigation.navigate('Admin Menu')
+                                    }}>
+                                        <Text>Management</Text>
+                                        <Icon source={"arrow-right"} size={18} />
+                                    </TouchableOpacity>
+                                </>)
+                                : 
+                                <></>
+                            }
+
                             <TouchableOpacity style={styles.listItem} onPress={userLogout}>
                                 <Text>Keluar</Text>
                                 <Icon source={"arrow-right"} size={18} />
@@ -74,6 +101,7 @@ const ProfileGroupScreen = () => {
                                 <Text>Ubah Alamat Kirim</Text>
                                 <Icon source={"arrow-right"} size={18} />
                             </TouchableOpacity>
+                            
                         </>
                         : 
                         <>

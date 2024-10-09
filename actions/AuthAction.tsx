@@ -29,7 +29,24 @@ const AuthAction = {
             }
         });
         return response.data;
-    } 
+    },
+
+    getUserToken: async() => {
+        try {
+            return await AsyncStorage.getItem('userToken');
+        }
+        catch(error) {
+            return '';
+        }
+    },
+
+    isUserLoggedIn: async() => {
+        const token = await AuthAction.getUserToken();
+        if(token) {
+            return true;
+        }
+        return false;
+    }
 }
 
 export default AuthAction;

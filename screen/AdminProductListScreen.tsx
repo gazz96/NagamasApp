@@ -6,6 +6,7 @@ import { Appbar, Button, TextInput, Card, Text } from 'react-native-paper'
 import { useIsFocused, useNavigation } from '@react-navigation/native'
 import Gap from '../components/Gap'
 import ProductAction from '../actions/ProductAction'
+import BaseUrl from '../actions/BaseUrl'
 
 const AdminProductListScreen = () => {
 
@@ -67,7 +68,7 @@ const AdminProductListScreen = () => {
                                 (rows.data).map((row, index) => {
                                     return (
                                         <Card key={row.id} style={{marginBottom: 12}}>
-                                            <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
+                                            <Card.Cover source={{ uri: BaseUrl(row.item_img_location_1) }} />
                                             <Card.Title 
                                                 title={row.item_name} 
                                                 subtitle={row.item_category}

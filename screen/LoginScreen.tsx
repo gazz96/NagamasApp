@@ -9,6 +9,7 @@ import AuthAction from '../actions/AuthAction'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Toast from 'react-native-toast-message'
 
+
 const LoginScreen = () => {
 
     const navigation = useNavigation();
@@ -24,6 +25,8 @@ const LoginScreen = () => {
         })
     }
 
+    
+
     const loginUser = async () => {
     
         setIsLoading(true);
@@ -35,10 +38,9 @@ const LoginScreen = () => {
             formData.append('mm_pass', form.mm_pass);
             const response = await AuthAction.login(formData);
             AsyncStorage.setItem('userToken', response.data.token);
-            console.log('response', response)
             Toast.show({
                 type: 'success',
-                text1: 'Berhasil mendaftar'
+                text1: 'Berhasil masuk'
             });
             navigation.navigate('Profile Group');
         }

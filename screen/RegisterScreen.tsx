@@ -7,6 +7,7 @@ import Gap from '../components/Gap'
 import AuthAction from '../actions/AuthAction'
 import Toast from 'react-native-toast-message'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import InvalidFormValidation from '../components/InvalidFormValidation'
 
 const RegisterScreen = () => {
 
@@ -20,7 +21,8 @@ const RegisterScreen = () => {
         mm_prov: 0,
         mm_kelurahan: 0,
         mm_address: "",
-        mm_pass: ""
+        mm_pass: "",
+        mm_confirm_pass: ""
     });
 
     const [province, setProvince] = useState({
@@ -76,17 +78,27 @@ const RegisterScreen = () => {
             formData.append('mm_kelurahan', village.id);
             formData.append('mm_address', form.mm_address);
             formData.append('mm_pass', form.mm_pass);
+            formData.append('mm_confirm_pass', form.mm_confirm_pass);
             const response = await AuthAction.registerUser(formData);
-            AsyncStorage.setItem('userToken', response.data.token);
-            console.log('response', response)
-            Toast.show({
-                type: 'success',
-                text1: 'Berhasil mendaftar'
-            });
-            navigation.navigate('Profile Group');
+
+            console.log('response', response);
+            if(response?.data?.token) {
+                AsyncStorage.setItem('userToken', response.data.token);
+                Toast.show({
+                    type: 'success',
+                    text1: 'Berhasil mendaftar'
+                });
+                navigation.navigate('Profile Group');
+            }
+            
         }
         catch (error: any) {
             if (error.response) {
+
+                if(error.response.status == 422)
+                {
+                    InvalidFormValidation(error?.response?.data?.errors ?? []);
+                }
                
                 console.log('error.esponse');
                 console.log(error.response.data);
@@ -171,7 +183,16 @@ const RegisterScreen = () => {
                     label="Kata Sandi"
                     onChangeText={(text) => handleChangeInput('mm_pass', text)}
                     value={form.mm_pass}
-                    secureTextEntry={true}
+                    secureTextEntry={false}
+                />
+                <Gap height={8} />
+
+                <TextInput
+                    mode="flat"
+                    label="Konfirmasi Kata Sandi"
+                    onChangeText={(text) => handleChangeInput('mm_confirm_pass', text)}
+                    value={form.mm_confirm_pass}
+                    secureTextEntry={false} 
                 />
                 <Gap height={8} />
 

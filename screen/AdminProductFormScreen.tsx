@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Image, Platform, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import ScreenWrapper from '../components/ScreenWrapper'
@@ -7,13 +7,15 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import Gap from '../components/Gap'
 import ProductAction from '../actions/ProductAction'
 import Toast from 'react-native-toast-message'
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+
 
 const AdminProductFormscreen = () => {
 
     const navigation = useNavigation();
     const route = useRoute();
-
     const [isLoading, setLoading] = useState(false);
+    const [photo, setPhoto] = useState(null);
     const [form, setForm] = useState({
         id: "",
         item_name: "",
@@ -45,44 +47,77 @@ const AdminProductFormscreen = () => {
         }
     }
 
+    const uploadFile = async() => {
+        const formData = new FormData();
+        
+        if(photo){
+            formData.append('item_img_location_1', {
+                name: photo.fileName,
+                type: photo.type,
+                uri: Platform.OS === 'ios' ? photo.uri.replace('file://', '') :  photo.uri
+            });
+        }
+
+        const response = await ProductAction.upload(formData);
+        return response.data.uploadedFilePath;
+    }
+
+    const createFormData = () => {
+        const formData = new FormData();   
+        for(let f in form)  {
+            console.log(f, form[f]);
+            formData.append(f, form[f]);
+        }
+        return formData;
+    }
+
     const saveForm = async () => {
         setLoading(true)
+        
         try {
-            const formData = new FormData();
-            for(let f in form)  {
-                formData.append(f, form[f]);
+            const form = createFormData();
+            const itemImgLocation1 = await uploadFile();
+            if(itemImgLocation1) {
+                form.append('item_img_location_1', itemImgLocation1);
             }
-            const response = await ProductAction.save(formData);
-            console.log('response', response);
+            const response = await ProductAction.save(form);
+
             Toast.show({
                 type: 'success',
                 text1: 'Berhasil disimpan'
             });
+
         }
         catch (error) {
             if (error.response) {
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx
-                console.log('error.esponse');
+                console.log('error.esponse', error.response);
                 console.log(error.response.data);
                 console.log(error.response.status);
                 console.log(error.response.headers);
-              } else if (error.request) {
+            } else if (error.request) {
                 console.log('error.request');
-                // The request was made but no response was received
-                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                // http.ClientRequest in node.js
                 console.log(error.request);
-              } else {
+            } else {
                 console.log('error.message');
-                // Something happened in setting up the request that triggered an Error
                 console.log('Error', error.message);
-              }
+            }
         }
         finally {
             setLoading(false);
         }
     }
+
+    const handleChoosePhoto = () => {
+        const options = {
+          noData: true,
+        }
+        launchImageLibrary(options, response => {
+            console.log('response.launchImageLibrary', response)
+          if (response?.assets) {
+            setPhoto(response?.assets[0]);
+          }
+        })
+      }
 
 
 
@@ -161,6 +196,17 @@ const AdminProductFormscreen = () => {
                         multiline={true}
                         onChangeText={(text) => handleInput('item_description', text)} />
 
+                    <Gap height={8} />
+
+                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    {photo && (
+                        <Image
+                            source={{ uri: photo.uri }}
+                            style={{ width: 300, height: 300 }}
+                        />
+                    )}
+                    <Button onPress={handleChoosePhoto}>Pilih Gambar</Button>
+                </View>
 
                     <Gap height={12}/>
                     <Button mode="contained" loading={isLoading} onPress={saveForm}>Simpan</Button>

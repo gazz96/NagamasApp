@@ -7,6 +7,7 @@ import { ActivityIndicator } from 'react-native-paper'
 import ProductItem from './ProductItem'
 import Rp from './Rp'
 import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native'
+import BaseUrl from '../actions/BaseUrl'
 
 const ProductListBlock = ({ name = "", search = "", postsPerPage = 20 }) => {
 
@@ -43,6 +44,7 @@ const ProductListBlock = ({ name = "", search = "", postsPerPage = 20 }) => {
                         id={row.id}
                         title={row.item_name} 
                         price={Rp(row.item_price_sell)}
+                        imageUrl={BaseUrl(row.item_img_location_1)}
                         defaultWidth={"49%"} 
                         key={row.id}/>)
             })

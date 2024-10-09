@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import ScreenWrapper from '../components/ScreenWrapper'
 import { Appbar, Button, TextInput } from 'react-native-paper'
 import App from '../App'
-import { useNavigation } from '@react-navigation/native'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
 import Gap from '../components/Gap'
 import AuthAction from '../actions/AuthAction'
 import Toast from 'react-native-toast-message'
@@ -11,7 +11,7 @@ import Toast from 'react-native-toast-message'
 const ProfileScreen = () => {
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
-
+  const isFocused = useIsFocused();
   const [user, setUser] = useState({
     //id: "",
     mm_name: "",
@@ -87,6 +87,7 @@ const ProfileScreen = () => {
       formData.append('mm_prov', user.province?.id);
       formData.append('mm_kelurahan', user.village?.id);
       formData.append('mm_address', user.mm_address);
+      formData.append('mm_pass', user.mm_pass);
       const response = await AuthAction.updateProfile(formData);
       await getPersonalInfo();
 
@@ -118,7 +119,7 @@ const ProfileScreen = () => {
 
   useEffect(() => {
     getPersonalInfo()
-  }, [])
+  }, [isFocused])
 
   return (
     <ScreenWrapper>
@@ -173,8 +174,14 @@ const ProfileScreen = () => {
               />
               <Gap height={8} />
 
-
+              <TextInput
+                mode="flat"
+                label="Password"
+                onChangeText={(text) => handleChangeInput('mm_pass', text)}
+                value={user?.mm_pass}
+              />
               <Gap height={8} />
+
               <Button mode="contained" onPress={updateProfile} loading={isLoading}>Simpan</Button>
               <Gap height={16} />
             </>

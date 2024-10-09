@@ -7,9 +7,9 @@
 
 import React, { useEffect, useState } from 'react';
 
-import { Text, BottomNavigation } from 'react-native-paper';
+import { Text, BottomNavigation, ActivityIndicator } from 'react-native-paper';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { CommonActions } from '@react-navigation/native';
+import { CommonActions, useIsFocused, useNavigation } from '@react-navigation/native';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -29,6 +29,11 @@ import CategoryProductScreen from './screen/CategoryProductScreen';
 import VillageScreen from './screen/VillageScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SingleProductScreen from './screen/SingleProductScreen';
+import AuthAction from './actions/AuthAction';
+import AdminMenuScreen from './screen/AdminMenuScreen';
+import userAuthUser from './stores/useAuthUser';
+import AdminProductListScreen from './screen/AdminProductListScreen';
+import AdminProductFormscreen from './screen/AdminProductFormScreen';
 
 const Stack = createStackNavigator();
 const ProfileStack = createStackNavigator();
@@ -62,12 +67,15 @@ const ProfileStackScreen = () => {
 }
 
 const HomeTab = () => {
+
   return (
+
     <Tab.Navigator
       initialRouteName='Tab.Home'
       screenOptions={{
         headerShown: false,
       }}
+
       tabBar={({ navigation, state, descriptors, insets }) => (
         <BottomNavigation.Bar
           navigationState={state}
@@ -99,49 +107,52 @@ const HomeTab = () => {
         />
       )}>
 
-      <Tab.Screen
-        name="Tab.Home"
-        component={HomeScreen}
-        options={{
-          tabBarLabel: 'Home',
-          tabBarIcon: ({ color }) => (
-            <Icon name="home" color={color} size={26} />
-          ),
-        }}
-      />
 
-      <Tab.Screen
-        name="Tab.Cart"
-        component={CartScreen}
-        options={{
-          tabBarLabel: 'Cart',
-          tabBarIcon: ({ color }) => (
-            <Icon name="cart" color={color} size={26} />
-          ),
-        }}
-      />
+      
+            <Tab.Screen
+              name="Tab.Home"
+              component={HomeScreen}
+              options={{
+                tabBarLabel: 'Home',
+                tabBarIcon: ({ color }) => (
+                  <Icon name="home" color={color} size={26} />
+                ),
+              }}
+            />
 
-      <Tab.Screen
-        name="Tab.Profile"
-        component={ProfileStackScreen}
-        options={{
-          tabBarLabel: 'Profile',
-          tabBarIcon: ({ color }) => (
-            <Icon name="account" color={color} size={26} />
-          ),
-        }}
-      />
+            <Tab.Screen
+              name="Tab.Cart"
+              component={CartScreen}
+              options={{
+                tabBarLabel: 'Cart',
+                tabBarIcon: ({ color }) => (
+                  <Icon name="cart" color={color} size={26} />
+                ),
+              }}
+            />
 
-      <Tab.Screen
-        name="Tab.Help"
-        component={HelpScreen}
-        options={{
-          tabBarLabel: 'Help',
-          tabBarIcon: ({ color }) => (
-            <Icon name="help-circle" color={color} size={26} />
-          ),
-        }}
-      />
+            <Tab.Screen
+              name="Tab.Profile"
+              component={ProfileStackScreen}
+              options={{
+                tabBarLabel: 'Profile',
+                tabBarIcon: ({ color }) => (
+                  <Icon name="account" color={color} size={26} />
+                ),
+              }}
+            />
+
+            <Tab.Screen
+              name="Tab.Help"
+              component={HelpScreen}
+              options={{
+                tabBarLabel: 'Help',
+                tabBarIcon: ({ color }) => (
+                  <Icon name="help-circle" color={color} size={26} />
+                ),
+              }}
+            />
+
     </Tab.Navigator>
   );
 }
@@ -158,8 +169,15 @@ function App() {
         <Stack.Screen name="Single Product" component={SingleProductScreen} />
 
         {/* ADMIN */}
+        
+        <Stack.Screen name="Admin Menu" component={AdminMenuScreen} />
         <Stack.Screen name="Admin Expedition List" component={AdminExpeditionListScreen} />
         <Stack.Screen name="Admin Expedition Form" component={AdminExpeditionFormScreen} />
+
+
+        <Stack.Screen name="Admin Product List" component={AdminProductListScreen} />
+        <Stack.Screen name="Admin Product Form" component={AdminProductFormscreen} />
+
         {/* <Stack.Screen name="Profile" component={ProfileScreen}/> */}
       </Stack.Navigator>
     </NavigationContainer>
