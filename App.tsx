@@ -34,6 +34,9 @@ import AdminMenuScreen from './screen/AdminMenuScreen';
 import userAuthUser from './stores/useAuthUser';
 import AdminProductListScreen from './screen/AdminProductListScreen';
 import AdminProductFormscreen from './screen/AdminProductFormScreen';
+import AdminFaqListScreen from './screen/AdminFaqListScreen';
+import AdminFaqFormScreen from './screen/AdminFaqFormScreen';
+import AdminOrderListScreen from './screen/AdminOrderListScreen';
 
 const Stack = createStackNavigator();
 const ProfileStack = createStackNavigator();
@@ -174,9 +177,13 @@ function App() {
         <Stack.Screen name="Admin Expedition List" component={AdminExpeditionListScreen} />
         <Stack.Screen name="Admin Expedition Form" component={AdminExpeditionFormScreen} />
 
-
         <Stack.Screen name="Admin Product List" component={AdminProductListScreen} />
         <Stack.Screen name="Admin Product Form" component={AdminProductFormscreen} />
+
+        <Stack.Screen name="Admin Faq List" component={AdminFaqListScreen} />
+        <Stack.Screen name="Admin Faq Form" component={AdminFaqFormScreen} />
+
+        <Stack.Screen name="Admin Order List" component={AdminOrderListScreen} />
 
         {/* <Stack.Screen name="Profile" component={ProfileScreen}/> */}
       </Stack.Navigator>

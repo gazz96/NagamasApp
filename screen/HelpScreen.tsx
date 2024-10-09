@@ -1,15 +1,46 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import ScreenWrapper from '../components/ScreenWrapper'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Appbar, List } from 'react-native-paper'
+import FaqAction from '../actions/FaqAction'
+import { useIsFocused } from '@react-navigation/native'
 
 const HelpScreen = () => {
 
+  const isFocused = useIsFocused();
   const [expanded, setExpanded] = React.useState(true);
-
   const handlePress = () => setExpanded(!expanded);
+  const [isLoading, setLoading] = useState(true);
+  const [rows, setRows] = useState([]);
 
+  const getFaq = async() => {
+    try {
+      setLoading(true);
+      const response = await FaqAction.list({
+        posts_per_page: 100
+      });
+      setRows(response?.data ?? []);
+    }
+    catch(error) {
+
+    }
+    finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    getFaq();
+  }, [])
+
+  if(isLoading) {
+    return (
+      <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator/>
+      </View>
+    )
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -21,26 +52,16 @@ const HelpScreen = () => {
         </Appbar.Header>
         
         <View style={{paddingHorizontal: 16}}>
-          <View style={styles.listItem}>
-            <Text style={styles.title}>1. Mengapa beli loga mulia disini ?</Text>
-            <Text style={styles.description}>Belanja logam mulaidisni produk dijamin pasti produk ASLI, harga termurah, pengiriman tepat waktu, aman dan berasuransi.</Text>
-          </View>
 
-          <View style={styles.listItem}>
-            <Text style={styles.title}>2. Apakah produk yang dijual disini jaminan asli, bagaimana cara mengeceknya ?</Text>
-            <Text style={styles.description}>
-              Produk StarGold dijamin pasti ASLI, untuk cara pengecekannya keasliannya dapat menggunakan cara sebagai berikut: 
-
-              ANTAM = Untuk mengecek keaslian produk ANTAM Logam Mulia bisa menggunakan aplikasi Certieye
-            </Text>
-          </View>
-
-          <View style={styles.listItem}>
-            <Text style={styles.title}>3. Apakah produk yang dijual disini bisaa dijual lagi ?</Text>
-            <Text style={styles.description}>
-              Tentu bisa, produk produk kami bisa dijual kembali kepada kami atau ke toko - toko emas lainnya. Namun jika dijual di toko emas lainnya itu tergantung dari kebijakan dan ketentuan toko emas tersebut.
-            </Text>
-          </View>
+          {
+            rows.map((row, index) => (
+              <View style={styles.listItem} key={row.id}>
+                <Text style={styles.title}>{index+1}. {row.question}</Text>
+                <Text style={styles.description}>{row.answer}</Text>
+              </View>
+            ))
+          }
+        
         </View>
 
       </ScreenWrapper>
@@ -54,7 +75,7 @@ const styles = StyleSheet.create({
   listItem: {
     marginBottom: 24,
   },
-  title: {fontWeight: 'bold', color: '#222', marginBottom: 8},
+  title: {fontWeight: 'bold', color: '#222', marginBottom: 8, fontSize: 18},
   description: {
 
   }

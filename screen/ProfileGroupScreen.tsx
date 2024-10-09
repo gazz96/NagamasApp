@@ -42,7 +42,7 @@ const ProfileGroupScreen = () => {
         setIsLoading(true)
         try {
             await AsyncStorage.removeItem('userToken');
-            setToken('')
+            setUser({})
             navigation.navigate('Profile Group');
         }
         catch(error) {

@@ -15,24 +15,38 @@ const AdminMenuScreen = () => {
                     <Appbar.Content title="MANAGEMENT" />
                 </Appbar.Header>
 
-                <View style={{paddingHorizontal: 16}}>
+                <View style={{ paddingHorizontal: 16 }}>
                     <List.Section>
-                        <List.Item title="Expedition" 
-                            left={() => <List.Icon icon="folder" />} 
+
+                        <List.Item title="Order"
+                            left={() => <List.Icon icon="folder" />}
+                            onPress={() => {
+                                navigation.navigate('Admin Order List');
+                            }} />
+
+                        <List.Item title="Expedition"
+                            left={() => <List.Icon icon="folder" />}
                             onPress={() => {
                                 navigation.navigate('Admin Expedition List');
-                            }}/>
+                            }} />
 
-
-                        <List.Item title="Product" 
-                            left={() => <List.Icon icon="folder" />} 
+                        <List.Item title="Product"
+                            left={() => <List.Icon icon="folder" />}
                             onPress={() => {
                                 navigation.navigate('Admin Product List');
-                            }}/>
-                        
+                            }} />
+
+                        <List.Item title="FAQ"
+                            left={() => <List.Icon icon="folder" />}
+                            onPress={() => {
+                                navigation.navigate('Admin Faq List');
+                            }} />
+
+                       
+
                     </List.Section>
 
-                    
+
                 </View>
             </ScreenWrapper>
         </SafeAreaView>
