@@ -95,8 +95,7 @@ const RegisterScreen = () => {
         catch (error: any) {
             if (error.response) {
 
-                if(error.response.status == 422)
-                {
+                if(error.response.status == 422) {
                     InvalidFormValidation(error?.response?.data?.errors ?? []);
                 }
                

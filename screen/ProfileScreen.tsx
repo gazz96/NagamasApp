@@ -48,6 +48,7 @@ const ProfileScreen = () => {
   const handleSelectProvince = () => {
     navigation.navigate('Select Province', {
       onSelect: (selectedProvince) => {
+        console.log('selectedProvince', selectedProvince);
         handleChangeInput('province', selectedProvince); // Set the province when coming back
       }
     });
@@ -118,8 +119,8 @@ const ProfileScreen = () => {
   }
 
   useEffect(() => {
-    getPersonalInfo()
-  }, [isFocused])
+      getPersonalInfo()
+  }, [])
 
   return (
     <ScreenWrapper>

@@ -13,7 +13,7 @@ const ProfileGroupScreen = () => {
 
     const navigation = useNavigation();
     const [isLoading, setIsLoading] = useState(true);
-
+    const [token, setToken] = useState("");
     const [user, setUser] = useState({
         mm_name: "",
         mm_phone: "",
@@ -30,7 +30,7 @@ const ProfileGroupScreen = () => {
             setUser(response?.me)
         }
         catch (error) {
-            console.log('error', error)
+            console.log('error', error.request)
         }
         finally {
             setIsLoading(false);
@@ -42,7 +42,12 @@ const ProfileGroupScreen = () => {
         setIsLoading(true)
         try {
             await AsyncStorage.removeItem('userToken');
-            setUser({})
+            setUser({
+                mm_name: "",
+                mm_phone: "",
+                mm_role: "subscriber",
+                mm_token: ""
+            })
             navigation.navigate('Profile Group');
         }
         catch(error) {

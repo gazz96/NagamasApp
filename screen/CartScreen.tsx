@@ -8,6 +8,7 @@ import { useIsFocused, useNavigation } from '@react-navigation/native'
 import OrderAction from '../actions/OrderAction'
 import Rp from '../components/Rp'
 import AuthAction from '../actions/AuthAction'
+import Toast from 'react-native-toast-message'
 
 const CartScreen = () => {
 
@@ -15,18 +16,16 @@ const CartScreen = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [carts, setCarts] = useState([])
   const isFocused = useIsFocused();
-  const token = AuthAction.getUserToken();
 
   const getCarts = async () => {
-  
     setIsLoading(true)
-    
     try {
       const response = await OrderAction.cart();
       setCarts(response?.data?.items)
     }
     catch (error) {
       console.log('data', error);
+      setCarts([])
     }
     finally {
       setIsLoading(false);
@@ -100,6 +99,27 @@ const CartScreen = () => {
     return total;
   }
 
+  const goToCheckout = async() => {
+
+    const token = await AuthAction.getUserToken();
+
+    if(!token) {
+      navigation.navigate('Login');
+    }
+
+    if(carts.length >= 1 ) {
+      navigation.navigate('Checkout');
+    }
+    else {
+      Toast.show({
+        text1: 'Cart kosong',
+        type: 'error',
+      })
+    }
+    
+   
+  }
+
   useEffect(() => {
 
       getCarts()
@@ -109,7 +129,7 @@ const CartScreen = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <ScreenWrapper style={{ flex: 1 }}>
         <Appbar.Header>
-          <Appbar.Content title="Cart" titleStyle={{
+          <Appbar.Content title="Order" titleStyle={{
             fontWeight: 'bold'
           }} />
         </Appbar.Header>
@@ -174,7 +194,10 @@ const CartScreen = () => {
           isLoading
             ? <ActivityIndicator />
             :
-            <Button mode="contained">Beli ({getQty()})
+            <Button mode="contained" onPress={() => {
+              goToCheckout();
+            }}>
+              Beli ({getQty()})
             </Button>
         }
       </View>

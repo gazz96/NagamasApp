@@ -34,6 +34,12 @@ const AdminOrderListScreen = () => {
         }
     }
 
+    const editOrder = (row: object = {}) => {
+        navigation.navigate('Admin Order Form', {
+            row: row
+        })
+    }
+
     useEffect(() => {
         getFaqData();
     }, [isFocused])
@@ -52,9 +58,9 @@ const AdminOrderListScreen = () => {
                 <Appbar.Header mode='small'>
                     <Appbar.BackAction onPress={() => navigation.goBack()} />
                     <Appbar.Content title="Order Data" />
-                    <Appbar.Action icon="plus" onPress={() => {
+                    {/* <Appbar.Action icon="plus" onPress={() => {
                         navigation.navigate('Admin Order Form');
-                    }} />
+                    }} /> */}
                 </Appbar.Header>
 
 
@@ -65,7 +71,7 @@ const AdminOrderListScreen = () => {
                     {
                         rows.map((row, index) => {
                             return (
-                                <View style={{ marginBottom: 16, paddingBottom: 16, borderBottomColor: '#ccc', borderBottomWidth: 1 }} key={row.id}>
+                                <View style={{ marginBottom: 16, paddingBottom: 16, borderBottomColor: '#ccc', borderBottomWidth: 1 }} key={row.so_id}>
                                     <TouchableOpacity>
                                     <Text 
                                         style={{
@@ -108,13 +114,16 @@ const AdminOrderListScreen = () => {
 
                                     <Gap height={8}/>
                                     <View style={{flexDirection: 'row'}}>
-                                        <Button mode='contained' style={{marginRight: 8}} onPress={() => {
+                                        {/* <Button mode='contained' style={{marginRight: 8}} onPress={() => {
                                            
-                                        }}>Lihat</Button>
+                                        }}>Lihat</Button> */}
                                         <Button mode='contained' onPress={() => {
                                              OpenWebUrl(BaseUrl('invoice/' + row.so_id))
                                         }} style={{marginRight: 8}}>Invoice</Button>
-                                        <Button mode='contained'>Edit</Button>
+
+                                        <Button mode='contained' onPress={() => {
+                                            editOrder(row)
+                                        }}>Edit</Button>
                                     </View>
                                 </View>
                             )

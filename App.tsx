@@ -37,31 +37,40 @@ import AdminProductFormscreen from './screen/AdminProductFormScreen';
 import AdminFaqListScreen from './screen/AdminFaqListScreen';
 import AdminFaqFormScreen from './screen/AdminFaqFormScreen';
 import AdminOrderListScreen from './screen/AdminOrderListScreen';
+import AdminOrderFormScreen from './screen/AdminOrderFormScreen';
+import CheckoutScreen from './screen/CheckoutScreen';
+import SelectExpeditionScreen from './screen/SelectExpeditionScreen';
 
 const Stack = createStackNavigator();
 const ProfileStack = createStackNavigator();
+const CartStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
+const CartStackScreen = () => {
+  return (
+    <CartStack.Navigator screenOptions={{
+      headerShown: false
+    }}>
+      <CartStack.Screen name="Cart" component={CartScreen} />
+      <CartStack.Screen name="Checkout" component={CheckoutScreen} />
+      <ProfileStack.Screen name="Select Checkout Province" component={ProvinceScreen} />
+      <ProfileStack.Screen name="Select Checkout Village" component={VillageScreen} />
+      <ProfileStack.Screen name="Select Checkout Expedition" component={SelectExpeditionScreen} />
+    </CartStack.Navigator>
+  )
+}
+
 const ProfileStackScreen = () => {
-
-
-  useEffect(() => {
-
-  })
-
 
   return (
     <ProfileStack.Navigator screenOptions={{
       headerShown: false
     }}>
-
-
       <ProfileStack.Screen name="Profile Group" component={ProfileGroupScreen} />
       <ProfileStack.Screen name="Profile" component={ProfileScreen} />
 
       <ProfileStack.Screen name="Login" component={LoginScreen} />
       <ProfileStack.Screen name="Register" component={RegisterScreen} />
-
 
       <ProfileStack.Screen name="Select Province" component={ProvinceScreen} />
       <ProfileStack.Screen name="Select Village" component={VillageScreen} />
@@ -111,50 +120,50 @@ const HomeTab = () => {
       )}>
 
 
-      
-            <Tab.Screen
-              name="Tab.Home"
-              component={HomeScreen}
-              options={{
-                tabBarLabel: 'Home',
-                tabBarIcon: ({ color }) => (
-                  <Icon name="home" color={color} size={26} />
-                ),
-              }}
-            />
 
-            <Tab.Screen
-              name="Tab.Cart"
-              component={CartScreen}
-              options={{
-                tabBarLabel: 'Cart',
-                tabBarIcon: ({ color }) => (
-                  <Icon name="cart" color={color} size={26} />
-                ),
-              }}
-            />
+      <Tab.Screen
+        name="Tab.Home"
+        component={HomeScreen}
+        options={{
+          tabBarLabel: 'Home',
+          tabBarIcon: ({ color }) => (
+            <Icon name="home" color={color} size={26} />
+          ),
+        }}
+      />
 
-            <Tab.Screen
-              name="Tab.Profile"
-              component={ProfileStackScreen}
-              options={{
-                tabBarLabel: 'Profile',
-                tabBarIcon: ({ color }) => (
-                  <Icon name="account" color={color} size={26} />
-                ),
-              }}
-            />
+      <Tab.Screen
+        name="Tab.Cart"
+        component={CartStackScreen}
+        options={{
+          tabBarLabel: 'Order',
+          tabBarIcon: ({ color }) => (
+            <Icon name="cart" color={color} size={26} />
+          ),
+        }}
+      />
 
-            <Tab.Screen
-              name="Tab.Help"
-              component={HelpScreen}
-              options={{
-                tabBarLabel: 'Help',
-                tabBarIcon: ({ color }) => (
-                  <Icon name="help-circle" color={color} size={26} />
-                ),
-              }}
-            />
+      <Tab.Screen
+        name="Tab.Profile"
+        component={ProfileStackScreen}
+        options={{
+          tabBarLabel: 'Profile',
+          tabBarIcon: ({ color }) => (
+            <Icon name="account" color={color} size={26} />
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="Tab.Help"
+        component={HelpScreen}
+        options={{
+          tabBarLabel: 'Help',
+          tabBarIcon: ({ color }) => (
+            <Icon name="help-circle" color={color} size={26} />
+          ),
+        }}
+      />
 
     </Tab.Navigator>
   );
@@ -172,7 +181,7 @@ function App() {
         <Stack.Screen name="Single Product" component={SingleProductScreen} />
 
         {/* ADMIN */}
-        
+
         <Stack.Screen name="Admin Menu" component={AdminMenuScreen} />
         <Stack.Screen name="Admin Expedition List" component={AdminExpeditionListScreen} />
         <Stack.Screen name="Admin Expedition Form" component={AdminExpeditionFormScreen} />
@@ -184,6 +193,7 @@ function App() {
         <Stack.Screen name="Admin Faq Form" component={AdminFaqFormScreen} />
 
         <Stack.Screen name="Admin Order List" component={AdminOrderListScreen} />
+        <Stack.Screen name="Admin Order Form" component={AdminOrderFormScreen} />
 
         {/* <Stack.Screen name="Profile" component={ProfileScreen}/> */}
       </Stack.Navigator>

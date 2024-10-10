@@ -1,7 +1,7 @@
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, Image, StyleSheet, Text, useWindowDimensions, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import ScreenWrapper from '../components/ScreenWrapper'
-import { ActivityIndicator, Appbar, Button, DataTable } from 'react-native-paper'
+import { ActivityIndicator, Appbar, Button, DataTable, Snackbar } from 'react-native-paper'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { ScrollView } from 'react-native-gesture-handler'
 import Gap from '../components/Gap'
@@ -10,12 +10,19 @@ import Rp from '../components/Rp'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import OrderAction from '../actions/OrderAction'
 import Toast from 'react-native-toast-message'
+import BaseUrl from '../actions/BaseUrl'
 
 const SingleProductScreen = () => {
+    const window = useWindowDimensions();
     const navigation = useNavigation();
     const route = useRoute();
     const [isLoading, setIsLoading] = useState(false);
     const [product, setProduct] = useState({});
+    const [visible, setVisible] = useState(false);
+
+    const onToggleSnackBar = () => setVisible(!visible);
+    const onDismissSnackBar = () => setVisible(false);
+
     const getProduct = async () => {
         setIsLoading(true);
         try {
@@ -35,19 +42,19 @@ const SingleProductScreen = () => {
         setIsLoading(true)
         try {
             const response = await OrderAction.addToCart(product?.id);
-            console.log('response',response);
-            Toast.show({
-                position: 'bottom',
-                type: 'snackBarToast',
-                text1: 'Berhasil dimasukan ke keranjang',
-                props: {
-                    onPressText: 'Lihat',
-                    onPress: () => {
-                        navigation.navigate('Tab.Cart');
-                    }
-                }
+            setVisible(true);
+            // Toast.show({
+            //     position: 'bottom',
+            //     type: 'snackBarToast',
+            //     text1: 'Berhasil dimasukan ke keranjang',
+            //     props: {
+            //         onPressText: 'Lihat',
+            //         onPress: () => {
+            //             navigation.navigate('Tab.Cart');
+            //         }
+            //     }
                 
-            });
+            // });
         }
         catch(error) {
             if (error.response) {
@@ -86,8 +93,15 @@ const SingleProductScreen = () => {
                         <>
 
                             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                                <Image source={require('../assets/banner-01.jpg')} style={{ width: 320, height: 180, marginRight: 16 }} resizeMode='contain' />
-                                <Image source={require('../assets/banner-01.jpg')} style={{ width: 320, height: 180, marginRight: 16 }} resizeMode='contain' />
+                                {
+                                    product.item_img_location_1 ?
+                                    <Image source={{
+                                        uri: BaseUrl(product.item_img_location_1)
+                                    }} style={{ width: window.width, height: 180, marginRight: 16 }} resizeMode='contain' />
+                                    : <></>
+                                }
+                                
+                                {/* <Image source={require('../assets/banner-01.jpg')} style={{ width: 320, height: 180, marginRight: 16 }} resizeMode='contain' /> */}
                             </ScrollView>
 
                             <Gap height={8} />
@@ -117,6 +131,7 @@ const SingleProductScreen = () => {
                                     </View>
                                 </DataTable>
                                 <Gap height={16}/>
+                                
                             </View>
 
 
@@ -129,6 +144,17 @@ const SingleProductScreen = () => {
             <View style={{padding: 16}}>
                 <Button mode="contained" onPress={addToCart} loading={isLoading}>Keranjang</Button>
             </View>
+            <Snackbar
+                visible={visible}
+                onDismiss={onDismissSnackBar}
+                action={{
+                label: 'Lihat',
+                onPress: () => {
+                    navigation.navigate('Tab.Cart');
+                },
+                }}>
+                Berhasil dimasukan ke keranjang
+            </Snackbar>
         </SafeAreaView>
     )
 }

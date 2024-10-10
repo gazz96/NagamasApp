@@ -15,8 +15,8 @@ const LoginScreen = () => {
     const navigation = useNavigation();
     const [isLoading, setIsLoading] = useState(false);
     const [form, setForm] = useState({
-        mm_phone: "",
-        mm_pass: "",
+        mm_phone: "081375419036",
+        mm_pass: "KOCAK",
     });
     const handleChangeInput = (field: string, value: string) => {
         setForm({
@@ -37,7 +37,7 @@ const LoginScreen = () => {
             formData.append('mm_phone', form.mm_phone);
             formData.append('mm_pass', form.mm_pass);
             const response = await AuthAction.login(formData);
-            AsyncStorage.setItem('userToken', response.data.token);
+            await AsyncStorage.setItem('userToken', response.data.token);
             Toast.show({
                 type: 'success',
                 text1: 'Berhasil masuk'
