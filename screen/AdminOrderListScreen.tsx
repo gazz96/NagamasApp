@@ -1,5 +1,5 @@
 import { StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback, useMemo, useRef } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import ScreenWrapper from '../components/ScreenWrapper'
 import { Appbar, Button, TextInput, DataTable, ActivityIndicator } from 'react-native-paper'
@@ -9,6 +9,8 @@ import OrderAction from '../actions/OrderAction'
 import Rp from '../components/Rp'
 import BaseUrl from '../actions/BaseUrl'
 import OpenWebUrl from '../components/OpenWebUrl'
+import { ScrollView } from 'react-native-gesture-handler'
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 
 const AdminOrderListScreen = () => {
 
@@ -16,14 +18,12 @@ const AdminOrderListScreen = () => {
     const isFocused = useIsFocused();
     const [isLoading, setLoading] = useState(true);
     const [rows, setRows] = useState([]);
+    const [tab, setTab] = useState('Order');
 
-    const getFaqData = async () => {
+    const getOrderList = async (options = {}) => {
         setLoading(true)
         try {
-            const response = await OrderAction.list({
-                posts_per_page: 100
-            });
-            console.log('response', response);
+            const response = await OrderAction.list(options);
             setRows(response.data);
         }
         catch (error) {
@@ -40,9 +40,21 @@ const AdminOrderListScreen = () => {
         })
     }
 
+    // ref
+    const bottomSheetRef = useRef<BottomSheet>(null);
+
+    // callbacks
+    const handleSheetChanges = useCallback((index: number) => {
+        console.log('handleSheetChanges', index);
+    }, []);
+
     useEffect(() => {
-        getFaqData();
+        getOrderList({
+            posts_per_page: 100,
+            status: tab
+        });
     }, [isFocused])
+
 
     if (isLoading) {
         return (
@@ -63,6 +75,30 @@ const AdminOrderListScreen = () => {
                     }} /> */}
                 </Appbar.Header>
 
+                <View style={{ paddingHorizontal: 16 }}>
+                    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                        {
+                            ['Order', 'Payment Needed', 'Paid', 'Delivery Note'].
+                                map((value, index) => (
+                                    <Button
+                                        mode={tab == value ? 'contained' : 'outlined'}
+                                        style={{ marginRight: 4 }}
+                                        key={value}
+                                        onPress={() => {
+
+                                            getOrderList({
+                                                posts_per_page: 100,
+                                                status: value
+                                            })
+                                            setTab(value)
+                                        }}>{value}</Button>
+                                ))
+                        }
+                    </ScrollView>
+                </View>
+
+                <Gap height={16} />
+
 
                 <View style={{ paddingHorizontal: 16 }}>
 
@@ -72,54 +108,39 @@ const AdminOrderListScreen = () => {
                         rows.map((row, index) => {
                             return (
                                 <View style={{ marginBottom: 16, paddingBottom: 16, borderBottomColor: '#ccc', borderBottomWidth: 1 }} key={row.so_id}>
-                                    <TouchableOpacity>
-                                    <Text 
-                                        style={{
-                                            backgroundColor: '#ccc', 
-                                            color: '#222', 
-                                            flexDirection: 'row',
-                                            paddingHorizontal: 8,
-                                            paddingVertical: 6, 
-                                            marginBottom: 8,
-                                            borderRadius: 4,
-                                            overflow: 'hidden',
-                                            width: 100,
-                                            textAlign: 'center'
-                                            
-                                        }}>{row.so_status}</Text>
-                                    </TouchableOpacity>
+
                                     <View>
                                         <Text>Customer</Text>
-                                        <Text style={{fontWeight: 'bold'}}>{row.so_cust_email}</Text>
+                                        <Text style={{ fontWeight: 'bold' }}>{row.so_cust_email}</Text>
                                     </View>
-                                    <Gap height={8}/>
+                                    <Gap height={8} />
                                     <View>
                                         <Text>Shipping</Text>
-                                        <Text style={{fontWeight: 'bold'}}>{row.shipping_address ?? '-'}</Text>
+                                        <Text style={{ fontWeight: 'bold' }}>{row.shipping_address ?? '-'}</Text>
                                     </View>
 
 
-                                    <Gap height={8}/>
+                                    <Gap height={8} />
                                     <View>
                                         <Text>Jumlah Item</Text>
-                                        <Text style={{fontWeight: 'bold'}}>{row.count_items}</Text>
+                                        <Text style={{ fontWeight: 'bold' }}>{row.count_items}</Text>
                                     </View>
 
-                                    <Gap height={8}/>
+                                    <Gap height={8} />
                                     <View>
                                         <Text>Total</Text>
-                                        <Text style={{fontWeight: 'bold'}}>{Rp(row.total_amount)}</Text>
+                                        <Text style={{ fontWeight: 'bold' }}>{Rp(row.total_amount)}</Text>
                                     </View>
 
 
-                                    <Gap height={8}/>
-                                    <View style={{flexDirection: 'row'}}>
+                                    <Gap height={8} />
+                                    <View style={{ flexDirection: 'row' }}>
                                         {/* <Button mode='contained' style={{marginRight: 8}} onPress={() => {
                                            
                                         }}>Lihat</Button> */}
                                         <Button mode='contained' onPress={() => {
-                                             OpenWebUrl(BaseUrl('invoice/' + row.so_id))
-                                        }} style={{marginRight: 8}}>Invoice</Button>
+                                            OpenWebUrl(BaseUrl('invoice/' + row.so_id))
+                                        }} style={{ marginRight: 8 }}>Invoice</Button>
 
                                         <Button mode='contained' onPress={() => {
                                             editOrder(row)
@@ -130,15 +151,33 @@ const AdminOrderListScreen = () => {
                         })
                     }
 
-                    
+
 
                 </View>
             </ScreenWrapper>
+            <BottomSheet
+                ref={bottomSheetRef}
+                onChange={handleSheetChanges}
+            >
+                <BottomSheetView style={styles.contentContainer}>
+                    <Text>Awesome 🎉</Text>
+                </BottomSheetView>
+            </BottomSheet>
         </SafeAreaView>
     )
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 24,
+        backgroundColor: 'grey',
+    },
+    contentContainer: {
+        flex: 1,
+        alignItems: 'center',
+    },
+})
 
 
 export default AdminOrderListScreen

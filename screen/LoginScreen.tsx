@@ -15,7 +15,7 @@ const LoginScreen = () => {
     const navigation = useNavigation();
     const [isLoading, setIsLoading] = useState(false);
     const [form, setForm] = useState({
-        mm_phone: "081375419036",
+        mm_email: "bagas.topati@gmail.com",
         mm_pass: "KOCAK",
     });
     const handleChangeInput = (field: string, value: string) => {
@@ -34,7 +34,7 @@ const LoginScreen = () => {
         try {
             console.log('formData', form);
             const formData = new FormData();
-            formData.append('mm_phone', form.mm_phone);
+            formData.append('mm_email', form.mm_email);
             formData.append('mm_pass', form.mm_pass);
             const response = await AuthAction.login(formData);
             await AsyncStorage.setItem('userToken', response.data.token);
@@ -76,10 +76,10 @@ const LoginScreen = () => {
             <View style={{paddingLeft: 16, paddingRight: 16 }}>
                 <TextInput
                     mode="flat"
-                    label="Nomor Whatsapp"
-                    placeholder="Contoh: 81234567890"
-                    onChangeText={(text) => handleChangeInput('mm_phone', text)}
-                    value={form.mm_phone}
+                    label="Email"
+                    placeholder="Contoh: john.doe@gmail.com"
+                    onChangeText={(text) => handleChangeInput('mm_email', text)}
+                    value={form.mm_email}
                     />
                 <Gap height={8}/>
                 <TextInput

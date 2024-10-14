@@ -38,7 +38,6 @@ const ProfileGroupScreen = () => {
     }
 
     const userLogout = async() => {
-
         setIsLoading(true)
         try {
             await AsyncStorage.removeItem('userToken');
@@ -68,17 +67,25 @@ const ProfileGroupScreen = () => {
     }
 
     return (
-
-        
-
         <ScreenWrapper>
             <Appbar.Header>
                 <Appbar.Content title="Profile" titleStyle={{
                     fontWeight: 'bold'
                 }} />
             </Appbar.Header>
+            
+            {
+                user.mm_token ? 
+                <View style={{paddingHorizontal: 16}}>
+                    <View style={{ backgroundColor: '#ccc', padding: 12, borderRadius: 4 }}>
+                        <Text style={{color: '#222', marginBottom: 2, fontWeight: 'bold'}}>{user?.mm_name}</Text>
+                        <Text style={{color: '#222'}}>{user?.id}</Text>
+                    </View>
+                </View> : <></>
+            }
+            
 
-            <View style={{ paddingLeft: 16, paddingRight: 15 }}>
+            <View style={{ paddingLeft: 16, paddingRight: 16 }}>
 
                 {
                     user.mm_token ? 

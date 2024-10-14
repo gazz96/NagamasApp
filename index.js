@@ -12,6 +12,7 @@ import {
 import Toast from 'react-native-toast-message';
 import currency from 'currency.js';
 import { Text, View } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const toastConfig = {
     tomatoToast: ({ text1, props }) => (
@@ -41,7 +42,9 @@ const toastConfig = {
 const Main = () => {
     return (
         <PaperProvider>
-            <App />
+            <GestureHandlerRootView>
+                <App />
+            </GestureHandlerRootView>
             <Toast config={toastConfig} visibilityTime={1000}/>
         </PaperProvider>
     );
