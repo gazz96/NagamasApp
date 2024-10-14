@@ -80,7 +80,7 @@ const ProfileScreen = () => {
     }
   }
 
-  const updateProfile = async() => {
+  const updateProfile = async () => {
     setIsLoading(true)
     try {
       const formData = new FormData();
@@ -96,22 +96,22 @@ const ProfileScreen = () => {
       Toast.show({
         text1: 'Berhasil disimpan'
       })
-      
+
     }
-    catch(error) {
+    catch (error) {
       if (error.response) {
-               
+
         console.log('error.esponse');
         console.log(error.response.data);
         console.log(error.response.status);
         console.log(error.response.headers);
-    } else if (error.request) {
+      } else if (error.request) {
         console.log('error.request');
         console.log(error.request);
-    } else {
+      } else {
         console.log('error.message');
         console.log('Error', error.message);
-    }
+      }
     }
     finally {
       setIsLoading(false);
@@ -119,7 +119,7 @@ const ProfileScreen = () => {
   }
 
   useEffect(() => {
-      getPersonalInfo()
+    getPersonalInfo()
   }, [])
 
   return (
@@ -128,7 +128,7 @@ const ProfileScreen = () => {
         <Appbar.BackAction onPress={() => {
           navigation.goBack();
         }} />
-        <Appbar.Content title="Ubah Alamat Kirim" titleStyle={{
+        <Appbar.Content title="Ubah Profile" titleStyle={{
           fontWeight: 'bold'
         }} />
       </Appbar.Header>
@@ -141,12 +141,21 @@ const ProfileScreen = () => {
             <>
 
               <TextInput
-                    mode="flat"
-                    label="Nama"
-                    onChangeText={(text) => handleChangeInput('mm_name', text)}
-                    value={user.mm_name}
-                />
-                <Gap height={8} />
+                mode="flat"
+                label="Nama"
+                onChangeText={(text) => handleChangeInput('mm_name', text)}
+                value={user.mm_name}
+              />
+              <Gap height={8} />
+
+              <TextInput
+                mode="flat"
+                label="Nomor WA"
+                value={user?.mm_phone}
+                onFocus={(text) => handleChangeInput('mm_phone', text)}
+              />
+              <Gap height={8} />
+
               <TextInput
                 mode="flat"
                 label="Provinsi"

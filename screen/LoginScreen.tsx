@@ -18,6 +18,7 @@ const LoginScreen = () => {
         mm_email: "bagas.topati@gmail.com",
         mm_pass: "KOCAK",
     });
+
     const handleChangeInput = (field: string, value: string) => {
         setForm({
             ...form,
@@ -25,23 +26,23 @@ const LoginScreen = () => {
         })
     }
 
-    
-
     const loginUser = async () => {
     
         setIsLoading(true);
-
+        
         try {
             console.log('formData', form);
             const formData = new FormData();
             formData.append('mm_email', form.mm_email);
             formData.append('mm_pass', form.mm_pass);
             const response = await AuthAction.login(formData);
+            //const response = await AuthAction.login(form);
             await AsyncStorage.setItem('userToken', response.data.token);
             Toast.show({
                 type: 'success',
                 text1: 'Berhasil masuk'
             });
+
             navigation.navigate('Profile Group');
         }
         catch (error: any) {

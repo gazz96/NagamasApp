@@ -9,8 +9,14 @@ import OrderAction from '../actions/OrderAction'
 import Rp from '../components/Rp'
 import BaseUrl from '../actions/BaseUrl'
 import OpenWebUrl from '../components/OpenWebUrl'
-import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import { ScrollView } from 'react-native-gesture-handler'
+
+import {
+    BottomSheetModal,
+    BottomSheetView,
+    BottomSheetModalProvider,
+} from '@gorhom/bottom-sheet';
+
 
 const AdminOrderListScreen = () => {
 
@@ -19,6 +25,7 @@ const AdminOrderListScreen = () => {
     const [isLoading, setLoading] = useState(true);
     const [rows, setRows] = useState([]);
     const [tab, setTab] = useState('Order');
+    const [selectedOrder, setSelectedOrder] = useState({});
 
     const getOrderList = async (options = {}) => {
         setLoading(true)
@@ -34,6 +41,23 @@ const AdminOrderListScreen = () => {
         }
     }
 
+    const updateToPaymentNeeded = async () => {
+        setLoading(true)
+        try {
+            await OrderAction.updateToPaymentNeeded(selectedOrder);
+            await getOrderList({
+                posts_per_page: 100,
+                status: tab
+            })
+        }
+        catch (error) {
+
+        }
+        finally {
+            setLoading(false);
+        }
+    };
+
     const editOrder = (row: object = {}) => {
         navigation.navigate('Admin Order Form', {
             row: row
@@ -41,9 +65,15 @@ const AdminOrderListScreen = () => {
     }
 
     // ref
-    const bottomSheetRef = useRef<BottomSheet>(null);
+    const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
+    // variables
+    const snapPoints = useMemo(() => ['25%', '50%'], []);
 
     // callbacks
+    const handlePresentModalPress = useCallback(() => {
+        bottomSheetModalRef.current?.present();
+    }, []);
     const handleSheetChanges = useCallback((index: number) => {
         console.log('handleSheetChanges', index);
     }, []);
@@ -65,16 +95,15 @@ const AdminOrderListScreen = () => {
     }
 
     return (
-        <GestureHandlerRootView style={{flex: 1}}>
-            
-            <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1 }}>
+            <BottomSheetModalProvider>
                 <ScreenWrapper>
                     <Appbar.Header mode='small'>
                         <Appbar.BackAction onPress={() => navigation.goBack()} />
                         <Appbar.Content title="Order Data" />
                         {/* <Appbar.Action icon="plus" onPress={() => {
-                            navigation.navigate('Admin Order Form');
-                        }} /> */}
+                        navigation.navigate('Admin Order Form');
+                    }} /> */}
                     </Appbar.Header>
 
                     <View style={{ paddingHorizontal: 16 }}>
@@ -128,6 +157,32 @@ const AdminOrderListScreen = () => {
                                             <Text style={{ fontWeight: 'bold' }}>{row.count_items}</Text>
                                         </View>
 
+                                        {
+                                            row?.so_status == "Payment Needed"
+                                                ?
+                                                <>
+                                                <Gap height={8} />
+                                                <View>
+                                                    <Text>Admin Fee</Text>
+                                                    <Text style={{ fontWeight: 'bold' }}>{row.so_admin_fee}</Text>
+                                                </View>
+
+                                                <Gap height={8} />
+                                                <View>
+                                                    <Text>Asuransi</Text>
+                                                    <Text style={{ fontWeight: 'bold' }}>{row.so_ship_insur_value}</Text>
+                                                </View>
+
+                                                <Gap height={8} />
+                                                <View>
+                                                    <Text>Biaya Pengiriman</Text>
+                                                    <Text style={{ fontWeight: 'bold' }}>{row.so_ship_fee}</Text>
+                                                </View>
+
+                                                </>
+                                                : <></>
+                                        }
+
                                         <Gap height={8} />
                                         <View>
                                             <Text>Total</Text>
@@ -137,36 +192,138 @@ const AdminOrderListScreen = () => {
 
                                         <Gap height={8} />
                                         <View style={{ flexDirection: 'row' }}>
-                                            {/* <Button mode='contained' style={{marginRight: 8}} onPress={() => {
-                                            
-                                            }}>Lihat</Button> */}
-                                            <Button mode='contained' onPress={() => {
-                                                OpenWebUrl(BaseUrl('invoice/' + row.so_id))
-                                            }} style={{ marginRight: 8 }}>Invoice</Button>
 
-                                            <Button mode='contained' onPress={() => {
+                                            {/* <Button mode='contained' onPress={() => {
+                                                OpenWebUrl(BaseUrl('invoice/' + row.so_id))
+                                            }} style={{ marginRight: 4 }}>Invoice</Button> */}
+
+                                            {/* <Button style={{ marginRight: 4}} mode='contained' onPress={() => {
                                                 editOrder(row)
-                                            }}>Edit</Button>
+                                            }}>Edit</Button> */}
+
+                                            {
+                                                row?.so_status == "Order"
+                                                    ?
+                                                    <Button mode="contained" onPress={() => {
+                                                        setSelectedOrder(row)
+                                                        handlePresentModalPress()
+                                                    }}>Konfirmasi</Button>
+                                                    : <></>
+                                            }
+
+                                            {
+                                                row.so_status == "Payment Needed"
+                                                    ? <>
+                                                        <Button mode="contained" onPress={() => {
+                                                            setSelectedOrder(row)
+                                                            handlePresentModalPress()
+                                                        }}>Lihat Bukti Bayar</Button>
+                                                    </> : <></>
+                                            }
                                         </View>
                                     </View>
                                 )
                             })
                         }
 
-
-
                     </View>
                 </ScreenWrapper>
-                <BottomSheet
-                    ref={bottomSheetRef}
+
+
+                <BottomSheetModal
+                    ref={bottomSheetModalRef}
+                    index={1}
+                    snapPoints={snapPoints}
                     onChange={handleSheetChanges}
+                    style={{
+                        borderWidth: 1,
+                        borderColor: '#EEE',
+                        borderRadius: 16
+                    }}
                 >
-                    <BottomSheetView style={styles.contentContainer}>
-                        <Text>Awesome 🎉</Text>
-                    </BottomSheetView>
-                </BottomSheet>
-            </SafeAreaView>
-        </GestureHandlerRootView>
+                    <View style={{ paddingHorizontal: 16 }}>
+                        {
+                            tab == "Order"
+                                ?
+                                <BottomSheetView style={styles.contentContainer}>
+                                    <TextInput label="Biaya Admin"
+                                        value={selectedOrder?.so_admin_fee}
+                                        onChangeText={(text) => {
+                                            setSelectedOrder({
+                                                ...selectedOrder,
+                                                ['so_admin_fee']: text
+                                            })
+                                        }} />
+                                    <Gap height={4} />
+                                    <TextInput label="Biaya Asuransi"
+                                        value={selectedOrder?.so_ship_insur_value}
+                                        onChangeText={(text) => {
+                                            setSelectedOrder({
+                                                ...selectedOrder,
+                                                ['so_ship_insur_value']: text
+                                            })
+                                        }} />
+                                    <Gap height={4} />
+
+                                    <TextInput label="Biaya Pengiriman"
+                                        value={selectedOrder?.so_ship_fee}
+                                        onChangeText={(text) => {
+                                            setSelectedOrder({
+                                                ...selectedOrder,
+                                                ['so_ship_fee']: text
+                                            })
+                                        }} />
+                                    <Gap height={8} />
+                                    <Button mode='contained' onPress={() => {
+                                        updateToPaymentNeeded()
+                                    }}>Konfirmasi</Button>
+                                    <Gap height={8} />
+                                </BottomSheetView>
+                                : <></>
+
+                        }
+
+{
+                            tab == "Payment Needed"
+                                ?
+                                <BottomSheetView style={styles.contentContainer}>
+                                    <TextInput label="Bank"
+                                        value={selectedOrder?.so_bank_name} 
+                                        />
+                                    <Gap height={4} />
+                                    <TextInput label="Atas Nama"
+                                        value={selectedOrder?.so_account_name} />
+                                    <Gap height={4} />
+
+                                    <TextInput label="Waktu Transfer"
+                                        value={selectedOrder?.so_transfer_time} />
+                                    <Gap height={8} />
+
+                                    <TextInput label="Jumlah Transfer"
+                                        value={selectedOrder?.so_transfer_amount} />
+                                    <Gap height={8} />
+
+                                    <TextInput label="Catatan"
+                                        value={selectedOrder?.so_transfer_notes} />
+                                    <Gap height={8} />
+
+
+                                    <Button mode='contained' onPress={() => {
+                                        //updateToPaymentNeeded()
+                                    }}>Sudah dibayar ?</Button>
+                                    <Gap height={8} />
+                                </BottomSheetView>
+                                : <></>
+
+                        }
+
+                    </View>
+                </BottomSheetModal>
+
+
+
+            </BottomSheetModalProvider>
+        </SafeAreaView>
     )
 }
 
@@ -177,8 +334,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'grey',
     },
     contentContainer: {
-        flex: 1,
-        alignItems: 'center',
+        width: '100%'
     },
 })
 
