@@ -40,6 +40,8 @@ import AdminOrderListScreen from './screen/AdminOrderListScreen';
 import AdminOrderFormScreen from './screen/AdminOrderFormScreen';
 import CheckoutScreen from './screen/CheckoutScreen';
 import SelectExpeditionScreen from './screen/SelectExpeditionScreen';
+import HistoryOrderScreen from './screen/HistoryOrderScreen';
+import AdminOrderDetailScreen from './screen/AdminOrderDetailScreen';
 
 const Stack = createStackNavigator();
 const ProfileStack = createStackNavigator();
@@ -176,10 +178,14 @@ function App() {
       <Stack.Navigator screenOptions={{
         headerShown: false
       }}>
+
+        
+       
         <Stack.Screen name="Main Home" component={HomeTab} />
+        <Stack.Screen name="User History Order" component={HistoryOrderScreen} />
         <Stack.Screen name="Category Product Screen" component={CategoryProductScreen} />
         <Stack.Screen name="Single Product" component={SingleProductScreen} />
-
+        
         {/* ADMIN */}
 
         <Stack.Screen name="Admin Menu" component={AdminMenuScreen} />
@@ -194,6 +200,7 @@ function App() {
 
         <Stack.Screen name="Admin Order List" component={AdminOrderListScreen} />
         <Stack.Screen name="Admin Order Form" component={AdminOrderFormScreen} />
+        <Stack.Screen name="Admin Order Detail" component={AdminOrderDetailScreen} />
 
         {/* <Stack.Screen name="Profile" component={ProfileScreen}/> */}
       </Stack.Navigator>

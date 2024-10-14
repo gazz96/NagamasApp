@@ -7,6 +7,7 @@ import { useIsFocused, useNavigation } from '@react-navigation/native'
 import ScreenWrapper from '../components/ScreenWrapper'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import AuthAction from '../actions/AuthAction'
+import Splash from '../components/Splash'
 
 
 const ProfileGroupScreen = () => {
@@ -63,7 +64,7 @@ const ProfileGroupScreen = () => {
 
     if(isLoading)
     {
-        return <ActivityIndicator/>
+        return <Splash/>
     }
 
     return (
@@ -106,7 +107,14 @@ const ProfileGroupScreen = () => {
                                     </TouchableOpacity>
                                 </>)
                                 : 
-                                <></>
+                                <>
+                                    <TouchableOpacity style={styles.listItem} onPress={() => {
+                                        navigation.navigate('User History Order')
+                                    }}>
+                                        <Text>History Order</Text>
+                                        <Icon source={"arrow-right"} size={18} />
+                                    </TouchableOpacity>
+                                </>
                             }
 
                             <TouchableOpacity style={styles.listItem} onPress={userLogout}>

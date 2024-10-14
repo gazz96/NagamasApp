@@ -84,6 +84,24 @@ const OrderAction = {
             } 
         });
         return response.data;
+    },
+    updateToLunas: async(data = {}) => {
+        const userToken = await AuthAction.getUserToken();
+        const response = await Api.post('/orders/update-to-lunas', data, {
+            headers: {
+                'x-token': userToken
+            } 
+        });
+        return response.data;
+    },
+    updateToDelivery: async(data = {}) => {
+        const userToken = await AuthAction.getUserToken();
+        const response = await Api.post('/orders/update-to-delivery', data, {
+            headers: {
+                'x-token': userToken
+            } 
+        });
+        return response.data;
     }
 }
 

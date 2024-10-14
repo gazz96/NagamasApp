@@ -8,6 +8,7 @@ import Gap from '../components/Gap'
 import AuthAction from '../actions/AuthAction'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Toast from 'react-native-toast-message'
+import InvalidFormValidation from '../components/InvalidFormValidation'
 
 
 const LoginScreen = () => {
@@ -51,7 +52,18 @@ const LoginScreen = () => {
                 console.log('error.esponse');
                 console.log(error.response.data);
                 console.log(error.response.status);
-                console.log(error.response.headers);
+                
+                if(error?.response?.status == 422) {
+                    InvalidFormValidation(error.response.data.errors);
+                }
+
+                if(error?.response?.status == 400) {
+                    Toast.show({
+                        type: 'error',
+                        text1: error.response.data.message
+                    })
+                }
+
             } else if (error.request) {
                 console.log('error.request');
                 console.log(error.request);

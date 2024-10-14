@@ -20,19 +20,20 @@ const toastConfig = {
             <Text>{props.uuid}</Text>
         </View>
     ),
-    snackBarToast: ({ text1, props}) => (
+    snackBarToast: ({ text1, props }) => (
         <View style={{
-            paddingHorizontal: 16, 
+            paddingHorizontal: 16,
             shadowColor: '#171717',
-            shadowOffset: {width: -2, height: 4},
+            shadowOffset: { width: -2, height: 4 },
             shadowOpacity: 0.2,
             shadowRadius: 3
+        }}>
+            <View style={{
+                height: 60, width: '100%', backgroundColor: '#fff', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 16,
+                borderRadius: 8
             }}>
-            <View style={{  
-                height: 60, width: '100%', backgroundColor: '#fff', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 16, 
-                borderRadius: 8 }}>
                 <Text style={{ color: '#222' }}>{text1}</Text>
-                <Text onPress={props.onPress} style={{color: 'red'}}>{props.onPressText}</Text>
+                <Text onPress={props.onPress} style={{ color: 'red' }}>{props.onPressText}</Text>
             </View>
         </View>
     )
@@ -41,10 +42,8 @@ const toastConfig = {
 const Main = () => {
     return (
         <PaperProvider>
-            
-                <App />
-                
-            <Toast config={toastConfig} visibilityTime={1000}/>
+            <App />
+            <Toast config={toastConfig} visibilityTime={1000} />
         </PaperProvider>
     );
 }
