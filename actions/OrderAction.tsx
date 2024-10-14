@@ -75,6 +75,15 @@ const OrderAction = {
             } 
         });
         return response.data;
+    },
+    updateToPaymentNeeded: async(data = {}) => {
+        const userToken = await AuthAction.getUserToken();
+        const response = await Api.post('/orders/update-to-payment-needed', data, {
+            headers: {
+                'x-token': userToken
+            } 
+        });
+        return response.data;
     }
 }
 

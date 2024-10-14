@@ -64,26 +64,83 @@ const AdminOrderFormScreen = () => {
     }, [])
 
     return (
-        <SafeAreaView style={{flex: 1}}>
-            <ScreenWrapper>
-                <Appbar.Header mode='small'>
+        <SafeAreaView style={{flex: 1 }}>
+            <ScreenWrapper style={{backgroundColor: '#eeeeee'}}>
+                <Appbar.Header mode='small' style={{backgroundColor: '#fff'}}>
                     <Appbar.BackAction onPress={() => navigation.goBack()} />
                     <Appbar.Content title="Form Order" />
                 </Appbar.Header>
 
-                <View style={{paddingHorizontal: 16}}>
-                    <TextInput
-                        label="ID"
-                        value={form.id}
-                        onChangeText={(text) => handleInput('id', text)}/>
-                    
-                    <Gap height={8}/>
+                <Gap height={8}/>
 
-                    <TextInput
-                        label="NAMA EXPEDISI"
-                        value={form.name}
-                        onChangeText={(text) => handleInput('name', text)}/>
-                    <Gap height={12}/>
+                <View style={{backgroundColor: "#ffffff"}}>
+                    <View style={{paddingHorizontal: 16, paddingVertical: 12}}>
+                        <Text style={{fontWeight: 'bold', color: '#222', fontSize: 16}}>Customer</Text>
+                        <Gap height={16}/>
+
+                        <View>
+                            <Text style={styles.title}>Email</Text>
+                            <Text>Custom@gmail.com</Text>
+                        </View>
+                        <Gap height={8}/>
+
+                        <View>
+                            <Text style={styles.title}>Nama</Text>
+                            <Text>Customer</Text>
+                        </View>
+                        <Gap height={8}/>
+
+                        <View>
+                            <Text style={styles.title}>Whatsapp</Text>
+                            <Text>087867894423</Text>
+                        </View>
+                    </View>
+                </View>
+
+                <Gap height={8}/>
+
+                <View style={{backgroundColor: "#ffffff"}}>
+                    <View style={{paddingHorizontal: 16, paddingVertical: 12}}>
+                        <Text style={{fontWeight: 'bold', color: '#222', fontSize: 16}}>Shipping</Text>
+                        <Gap height={16}/>
+
+                        <View>
+                            <Text style={styles.title}>Provinsi</Text>
+                            <Text>Sumatera Utara</Text>
+                        </View>
+                        <Gap height={12}/>
+
+                        <View>
+                            <Text style={styles.title}>Kabupaten/Kota</Text>
+                            <Text>Kabupaten/Kota</Text>
+                        </View>
+                        <Gap height={12}/>
+
+                        <View>
+                            <Text style={styles.title}>Kecamatan</Text>
+                            <Text>Kecamatan</Text>
+                        </View>
+                        <Gap height={12}/>
+
+                        <View>
+                            <Text style={styles.title}>Kelurahan</Text>
+                            <Text>Kelurahan</Text>
+                        </View>
+                        <Gap height={12}/>
+
+                        <View>
+                            <Text style={styles.title}>Alamat</Text>
+                            <Text>JL. ILENG KOMP. TAMAN PERMATA HIJAU BLOK. B NO. 13</Text>
+                        </View>
+                    </View>
+                </View>
+                
+                <Gap height={8}/>
+                
+
+                <View style={{paddingHorizontal: 16}}>
+                    
+                    
                     <Button mode="contained" loading={isLoading} onPress={saveForm}>Simpan</Button>
             
                 </View>
@@ -92,6 +149,22 @@ const AdminOrderFormScreen = () => {
     )
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    headerTitle: {
+
+    },
+    cardTitle: {
+
+    },
+    title: {
+        fontWeight: 'bold', 
+        color: '#222', 
+        marginBottom: 4
+    },
+
+    text: {
+
+    }
+})
 
 export default AdminOrderFormScreen;

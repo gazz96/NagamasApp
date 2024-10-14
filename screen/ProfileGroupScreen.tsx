@@ -77,9 +77,14 @@ const ProfileGroupScreen = () => {
             {
                 user.mm_token ? 
                 <View style={{paddingHorizontal: 16}}>
-                    <View style={{ backgroundColor: '#ccc', padding: 12, borderRadius: 4 }}>
-                        <Text style={{color: '#222', marginBottom: 2, fontWeight: 'bold'}}>{user?.mm_name}</Text>
-                        <Text style={{color: '#222'}}>{user?.id}</Text>
+                    <View style={{ backgroundColor: '#ccc', padding: 12, borderRadius: 4, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <View>
+                            <Text style={{color: '#222', marginBottom: 2, fontWeight: 'bold'}}>{user?.mm_name}</Text>
+                            <Text style={{color: '#222'}}>{user?.id}</Text>
+                        </View>
+                        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+                            <Text>Ubah Profile</Text>
+                        </TouchableOpacity>
                     </View>
                 </View> : <></>
             }
@@ -109,10 +114,6 @@ const ProfileGroupScreen = () => {
                                 <Icon source={"arrow-right"} size={18} />
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={styles.listItem} onPress={() => navigation.navigate('Profile')}>
-                                <Text>Ubah Alamat Kirim</Text>
-                                <Icon source={"arrow-right"} size={18} />
-                            </TouchableOpacity>
                             
                         </>
                         : 

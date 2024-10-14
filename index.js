@@ -41,12 +41,14 @@ const toastConfig = {
 
 const Main = () => {
     return (
-        <PaperProvider>
-            <GestureHandlerRootView>
-                <App />
-            </GestureHandlerRootView>
-            <Toast config={toastConfig} visibilityTime={1000}/>
-        </PaperProvider>
+        <GestureHandlerRootView>
+            <PaperProvider>
+                <GestureHandlerRootView>
+                    <App />
+                </GestureHandlerRootView>
+                <Toast config={toastConfig} visibilityTime={1000}/>
+            </PaperProvider>
+        </GestureHandlerRootView>
     );
 }
 
