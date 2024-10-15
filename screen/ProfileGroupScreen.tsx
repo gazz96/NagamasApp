@@ -105,6 +105,12 @@ const ProfileGroupScreen = () => {
                                         <Text>Management</Text>
                                         <Icon source={"arrow-right"} size={18} />
                                     </TouchableOpacity>
+                                    <TouchableOpacity style={styles.listItem} onPress={() => {
+                                        navigation.navigate('User History Order')
+                                    }}>
+                                        <Text>History Order</Text>
+                                        <Icon source={"arrow-right"} size={18} />
+                                    </TouchableOpacity>
                                 </>)
                                 : 
                                 <>

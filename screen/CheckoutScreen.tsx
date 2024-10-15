@@ -132,8 +132,6 @@ const CheckoutScreen = () => {
         expd_name: ""
       })
 
-      OpenWebUrl(WhatsappAction.send(settingResponse.AdminPhoneNumber, checkoutResponse?.data?.message ?? ''))
-
       navigation.navigate('Tab.Home')
 
     }

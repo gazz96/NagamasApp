@@ -42,6 +42,12 @@ const AdminMenuScreen = () => {
                                 navigation.navigate('Admin Faq List');
                             }} />
 
+                        <List.Item title="Rekap"
+                            left={() => <List.Icon icon="folder" />}
+                            onPress={() => {
+                                navigation.navigate('Admin Faq List');
+                            }} />
+
                        
 
                     </List.Section>

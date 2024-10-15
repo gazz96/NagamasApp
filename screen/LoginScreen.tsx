@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { Appbar, TextInput, Button } from 'react-native-paper'
 import App from '../App'
@@ -16,8 +16,8 @@ const LoginScreen = () => {
     const navigation = useNavigation();
     const [isLoading, setIsLoading] = useState(false);
     const [form, setForm] = useState({
-        mm_email: "bagas.topati@gmail.com",
-        mm_pass: "KOCAK",
+        mm_email: "",
+        mm_pass: "",
     });
 
     const handleChangeInput = (field: string, value: string) => {
@@ -107,6 +107,12 @@ const LoginScreen = () => {
                 <Button mode="contained" onPress={loginUser}>
                     Masuk
                 </Button>
+
+                <Gap height={12}/>
+                <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center'}}>
+                    <Text style={{color: '#222'}}>Lupa Kata Sandi ? </Text>
+                </TouchableOpacity>
+
             </View>
         </ScreenWrapper>
     )
