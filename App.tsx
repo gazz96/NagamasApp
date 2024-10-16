@@ -27,11 +27,8 @@ import AdminExpeditionListScreen from './screen/AdminExpeditionListScreen';
 import AdminExpeditionFormScreen from './screen/AdminExpeditionFormScreen';
 import CategoryProductScreen from './screen/CategoryProductScreen';
 import VillageScreen from './screen/VillageScreen';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import SingleProductScreen from './screen/SingleProductScreen';
-import AuthAction from './actions/AuthAction';
 import AdminMenuScreen from './screen/AdminMenuScreen';
-import userAuthUser from './stores/useAuthUser';
 import AdminProductListScreen from './screen/AdminProductListScreen';
 import AdminProductFormscreen from './screen/AdminProductFormScreen';
 import AdminFaqListScreen from './screen/AdminFaqListScreen';
@@ -42,6 +39,8 @@ import CheckoutScreen from './screen/CheckoutScreen';
 import SelectExpeditionScreen from './screen/SelectExpeditionScreen';
 import HistoryOrderScreen from './screen/HistoryOrderScreen';
 import AdminOrderDetailScreen from './screen/AdminOrderDetailScreen';
+import ForgetPasswordScreen from './screen/ForgetPasswordScreen';
+import AdminPrintLabelScreen from './screen/AdminPrintLabelScreen';
 
 const Stack = createStackNavigator();
 const ProfileStack = createStackNavigator();
@@ -73,6 +72,7 @@ const ProfileStackScreen = () => {
 
       <ProfileStack.Screen name="Login" component={LoginScreen} />
       <ProfileStack.Screen name="Register" component={RegisterScreen} />
+      <ProfileStack.Screen name="Forget Password" component={ForgetPasswordScreen} />
 
       <ProfileStack.Screen name="Select Province" component={ProvinceScreen} />
       <ProfileStack.Screen name="Select Village" component={VillageScreen} />
@@ -201,6 +201,7 @@ function App() {
         <Stack.Screen name="Admin Order List" component={AdminOrderListScreen} />
         <Stack.Screen name="Admin Order Form" component={AdminOrderFormScreen} />
         <Stack.Screen name="Admin Order Detail" component={AdminOrderDetailScreen} />
+        <Stack.Screen name="Admin Print Label" component={AdminPrintLabelScreen} />
 
         {/* <Stack.Screen name="Profile" component={ProfileScreen}/> */}
       </Stack.Navigator>

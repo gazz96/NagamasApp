@@ -109,7 +109,9 @@ const LoginScreen = () => {
                 </Button>
 
                 <Gap height={12}/>
-                <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center'}}>
+                <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center'}} onPress={() => {
+                    navigation.navigate('Forget Password')
+                }}>
                     <Text style={{color: '#222'}}>Lupa Kata Sandi ? </Text>
                 </TouchableOpacity>
 

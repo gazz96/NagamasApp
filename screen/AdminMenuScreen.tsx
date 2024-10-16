@@ -4,6 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import ScreenWrapper from '../components/ScreenWrapper'
 import { Appbar, List } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
+import OpenWebUrl from '../components/OpenWebUrl'
+import BaseUrl from '../actions/BaseUrl'
 
 const AdminMenuScreen = () => {
     const navigation = useNavigation();
@@ -42,10 +44,12 @@ const AdminMenuScreen = () => {
                                 navigation.navigate('Admin Faq List');
                             }} />
 
-                        <List.Item title="Rekap"
+                        <List.Item title="Print Label"
                             left={() => <List.Icon icon="folder" />}
                             onPress={() => {
-                                navigation.navigate('Admin Faq List');
+                                OpenWebUrl(
+                                    BaseUrl('print-label')
+                                )
                             }} />
 
                        

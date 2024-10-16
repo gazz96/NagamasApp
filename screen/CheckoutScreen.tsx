@@ -21,7 +21,7 @@ const CheckoutScreen = () => {
     //id: "",
     mm_name: "",
     mm_gender: "",
-    //mm_phone: "",
+    mm_phone: "",
     mm_prov: 0,
     mm_kelurahan: 0,
     mm_address: "",
@@ -168,6 +168,7 @@ const CheckoutScreen = () => {
       formData.append('mm_kelurahan', user.village?.id);
       formData.append('mm_address', user.mm_address);
       formData.append('mm_pass', user.mm_pass);
+      formData.append('mm_phone', user.mm_phone)
       return formData;
   }
 
@@ -207,9 +208,17 @@ const CheckoutScreen = () => {
 
               <TextInput
                 mode="flat"
+                label="Whatsapp"
+                onChangeText={(text) => handleChangeInput('mm_phone', text)}
+                value={user?.mm_phone}
+              />
+              <Gap height={8} />
+
+              <TextInput
+                mode="flat"
                 label="Nama"
                 onChangeText={(text) => handleChangeInput('mm_name', text)}
-                value={user.mm_name}
+                value={user?.mm_name}
               />
               <Gap height={8} />
               <TextInput

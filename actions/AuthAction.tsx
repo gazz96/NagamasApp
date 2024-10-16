@@ -11,6 +11,10 @@ const AuthAction = {
         const response = await Api.post('/signin', data);
         return response.data;
     },
+    resetPassword: async(data = {}) => {
+        const response = await Api.post('/reset-password', data);
+        return response.data;
+    },
     me: async() => {
         const token = await AsyncStorage.getItem('userToken');
         const response = await Api.post('/me', {

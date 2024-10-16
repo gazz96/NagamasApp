@@ -144,101 +144,28 @@ const HistoryOrderScreen = () => {
                                 return (
                                     <View style={{ marginBottom: 16, paddingBottom: 16, borderBottomColor: '#ccc', borderBottomWidth: 1 }} key={row.so_id}>
 
-                                        <Gap height={8} />
-                                        <View>
-                                            <Text>Shipping</Text>
-                                            <Text style={{ fontWeight: 'bold' }}>{row.shipping_address ?? '-'}</Text>
+                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                            <Text style={{ fontWeight: 'bold', color: '#222', fontSize: 14 }}>{row?.so_cust_email}</Text>
+                                            <Text style={{ color: 'red', fontWeight: 'bold', fontSize: 14 }}>{Rp(row?.total_amount)}</Text>
                                         </View>
-
-                                        {
-                                            row?.so_status == "Payment Needed"
-                                                ?
-                                                <>
-                                                    <Gap height={4} />
-
-                                                    <View>
-                                                        <Text>Admin Fee</Text>
-                                                        <Text style={{ fontWeight: 'bold' }}>{Rp(row?.so_admin_fee)}</Text>
-                                                    </View>
-
-                                                    <Gap height={4} />
-
-                                                    <View>
-                                                        <Text>Asuransi</Text>
-                                                        <Text style={{ fontWeight: 'bold' }}>{Rp(row?.so_ship_insur_value)}</Text>
-                                                    </View>
-
-                                                    <Gap height={4} />
-
-                                                    <View>
-                                                        <Text>Biaya Pengiriman</Text>
-                                                        <Text style={{ fontWeight: 'bold' }}>{Rp(row?.so_ship_fee)}</Text>
-                                                    </View>
-
-                                                </>
-                                                : <></>
-                                        }
-
                                         <Gap height={8} />
-                                        <View>
-                                            <Text>Total</Text>
-                                            <Text style={{ fontWeight: 'bold' }}>{Rp(row.total_amount)}</Text>
+                                        <View style={{ flexDirection: 'row' }}>
+                                            <Text style={{ fontSize: 12, color: '#858585' }}>{row?.so_date} | </Text>
+                                            <Text style={{ fontSize: 12, color: '#858585' }}>{row?.so_id}</Text>
                                         </View>
-                                        <Gap height={4} />
-                                        {
-                                            row?.so_status == "Payment Needed" ?
-                                                <List.AccordionGroup>
-                                                    <List.Accordion title="Bukti Bayar" id="1" style={{backgroundColor: '#eee'}}>
-                                                        
-                                                        <Gap height={4} />
-
-                                                        <View>
-                                                            <Text>Bank</Text>
-                                                            <Text style={{ fontWeight: 'bold' }}>{row?.so_bank_name}</Text>
-                                                        </View>
-
-                                                        <Gap height={4} />
-
-                                                        <View>
-                                                            <Text>Atas Nama</Text>
-                                                            <Text style={{ fontWeight: 'bold' }}>{row?.so_account_name}</Text>
-                                                        </View>
-
-                                                        <Gap height={4} />
-
-                                                        <View>
-                                                            <Text>Jumlah Transfer</Text>
-                                                            <Text style={{ fontWeight: 'bold' }}>{Rp(row?.so_transfer_amount)}</Text>
-                                                        </View>
-
-                                                        <Gap height={4} />
-
-                                                        <View>
-                                                            <Text>Tanggal Transfer</Text>
-                                                            <Text style={{ fontWeight: 'bold' }}>{row?.so_transfer_time}</Text>
-                                                        </View>
-
-                                                        <Gap height={4} />
-
-                                                        <View>
-                                                            <Text>Catatan</Text>
-                                                            <Text style={{ fontWeight: 'bold' }}>{row?.so_transfer_notes}</Text>
-                                                        </View>
-                                                    </List.Accordion>
-                                                </List.AccordionGroup>
-                                                : <></>
-                                        }
 
                                         <Gap height={8} />
                                         <View style={{ flexDirection: 'row' }}>
-
+                                            <Button mode="contained" style={{ marginRight: 8 }} onPress={() => {
+                                                navigation.navigate('Admin Order Detail', {
+                                                    order: row
+                                                })
+                                            }}>Lihat</Button>
 
                                             {
                                                 row?.so_status == "Order"
                                                     ?
-                                                    <Button mode="contained" onPress={() => {
-
-                                                    }}>Menunggu Konfirmasi Admin</Button>
+                                                    <Button>Menunggu Konfirmasi Admin</Button>
                                                     : <></>
                                             }
 
@@ -252,6 +179,7 @@ const HistoryOrderScreen = () => {
                                                     </> : <></>
                                             }
                                         </View>
+
                                     </View>
                                 )
                             })
