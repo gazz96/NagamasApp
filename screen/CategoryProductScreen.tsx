@@ -9,6 +9,7 @@ import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native'
 import Gap from '../components/Gap'
 
 
+
 const CategoryProductScreen = () => {
 
     const navigation = useNavigation();

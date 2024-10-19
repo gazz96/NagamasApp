@@ -7,6 +7,7 @@ import { useIsFocused, useNavigation } from '@react-navigation/native'
 import Gap from '../components/Gap'
 import AuthAction from '../actions/AuthAction'
 import Toast from 'react-native-toast-message'
+import InvalidFormValidation from '../components/InvalidFormValidation'
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
@@ -16,7 +17,7 @@ const ProfileScreen = () => {
     //id: "",
     mm_name: "",
     mm_gender: "",
-    //mm_phone: "",
+    mm_phone: "",
     mm_prov: 0,
     mm_kelurahan: 0,
     mm_address: "",
@@ -90,6 +91,7 @@ const ProfileScreen = () => {
       formData.append('mm_address', user.mm_address);
       formData.append('mm_pass', user.mm_pass);
       formData.append('mm_phone', user.mm_phone);
+      console.log('formData', formData);
       const response = await AuthAction.updateProfile(formData);
       await getPersonalInfo();
 
@@ -101,11 +103,11 @@ const ProfileScreen = () => {
     }
     catch (error) {
       if (error.response) {
-
         console.log('error.esponse');
         console.log(error.response.data);
         console.log(error.response.status);
         console.log(error.response.headers);
+        InvalidFormValidation(error.response.data.errors);
       } else if (error.request) {
         console.log('error.request');
         console.log(error.request);
@@ -153,7 +155,7 @@ const ProfileScreen = () => {
                 mode="flat"
                 label="Nomor WA"
                 value={user?.mm_phone}
-                onFocus={(text) => handleChangeInput('mm_phone', text)}
+                onChangeText={(text) => handleChangeInput('mm_phone', text)}
               />
               <Gap height={8} />
 
@@ -177,7 +179,7 @@ const ProfileScreen = () => {
 
               <TextInput
                 mode="flat"
-                label="Alamat"
+                label="Alamat (Jalan/Nomor. Rumah-Kode/Pos)"
                 onChangeText={(text) => handleChangeInput('mm_address', text)}
                 multiline={true}
                 numberOfLines={3}

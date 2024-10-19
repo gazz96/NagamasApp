@@ -41,6 +41,7 @@ import HistoryOrderScreen from './screen/HistoryOrderScreen';
 import AdminOrderDetailScreen from './screen/AdminOrderDetailScreen';
 import ForgetPasswordScreen from './screen/ForgetPasswordScreen';
 import AdminPrintLabelScreen from './screen/AdminPrintLabelScreen';
+import SearchProductScreen from './screen/SearchProductScreen';
 
 const Stack = createStackNavigator();
 const ProfileStack = createStackNavigator();
@@ -185,6 +186,7 @@ function App() {
         <Stack.Screen name="User History Order" component={HistoryOrderScreen} />
         <Stack.Screen name="Category Product Screen" component={CategoryProductScreen} />
         <Stack.Screen name="Single Product" component={SingleProductScreen} />
+        <Stack.Screen name="Search Product" component={SearchProductScreen}/>
         
         {/* ADMIN */}
 

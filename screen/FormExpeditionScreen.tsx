@@ -6,6 +6,7 @@ import { Appbar, Button, PaperProvider, Portal, Modal, TextInput } from 'react-n
 import Gap from '../components/Gap'
 import { useNavigation } from '@react-navigation/native'
 import ExpeditionAction from '../actions/ExpeditionAction'
+import InvalidFormValidation from '../components/InvalidFormValidation'
 
 const FormExpeditionScreen = () => {
 
@@ -27,7 +28,14 @@ const FormExpeditionScreen = () => {
             console.log('response', response);
         }
         catch(error) {
-            console.log('error', error.message);
+            
+            if (error.response) {
+
+                if(error.response.status == 422) {
+                    InvalidFormValidation(error?.response?.data?.errors ?? []);
+                }
+               
+            }
         }
         finally {
 

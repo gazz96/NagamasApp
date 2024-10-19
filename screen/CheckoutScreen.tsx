@@ -139,7 +139,7 @@ const CheckoutScreen = () => {
         console.log('error', error.response);
       if (error.response) {
         if(error.response.status == 422) {
-          console.log('errors data', error?.response.data);
+          console.log('errors data', error?.response.data.errors ?? []);
           InvalidFormValidation(error?.response?.data?.errors ?? []);
         }
       } else if (error.request) {

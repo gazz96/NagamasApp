@@ -26,6 +26,11 @@ const ProductAction = {
             }
         });
         return response.data;
+    },
+
+    categories: async(data = {}) => {
+        const response = await Api.get('/categories', data);
+        return response.data;
     }
 }
 

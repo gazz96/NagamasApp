@@ -5,7 +5,7 @@ import ScreenWrapper from "../components/ScreenWrapper";
 import { ScrollView } from "react-native-gesture-handler";
 import Gap from "../components/Gap";
 import CategoryProductBlock from "../components/CategoryProductBlock";
-import { useIsFocused } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { useEffect } from "react";
 
 const {width} = Dimensions.get('window');
@@ -13,6 +13,7 @@ const {width} = Dimensions.get('window');
 const HomeScreen = () => {
 
     const isFocused = useIsFocused();
+    const navigation = useNavigation();
     
     useEffect(() => {
 
@@ -23,9 +24,12 @@ const HomeScreen = () => {
             <View style={{paddingHorizontal: 16, paddingVertical: 8, backgroundColor: '#fff'}}>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                     <Searchbar  
-                        placeholder="Search"
+                        placeholder="Cari"
                         mode="bar"
                         style={{width: '83%'}}
+                        onFocus={() => {
+                            navigation.navigate('Search Product')
+                        }}
                     />
                     <View style={{width: 50, flexDirection: 'row', justifyContent: 'space-end'}}>
                         <Image source={require('../assets/logo.jpg')} style={styles.logo}/>

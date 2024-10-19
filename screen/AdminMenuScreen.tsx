@@ -47,9 +47,7 @@ const AdminMenuScreen = () => {
                         <List.Item title="Print Label"
                             left={() => <List.Icon icon="folder" />}
                             onPress={() => {
-                                OpenWebUrl(
-                                    BaseUrl('print-label')
-                                )
+                                navigation.navigate('Admin Print Label')
                             }} />
 
                        

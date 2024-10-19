@@ -27,6 +27,24 @@ const SelectExpeditionScreen = () => {
         }
         catch(error) {
             console.log('error', error);
+            if (error.response) {
+                if(error.response.status == 422) {
+                  console.log('errors data', error?.response.data ?? []);
+                  InvalidFormValidation(error?.response?.data?.errors ?? []);
+                }
+              } else if (error.request) {
+                Toast.show({
+                  text1: 'Internal Request Problem',
+                  type: 'warning'
+                })
+              } else {
+                console.log('error.message');
+                Toast.show({
+                  text1: 'Something Wrong',
+                  type: 'danger'
+                })
+              }
+            
         }
         finally {
             setIsLoading(false)
