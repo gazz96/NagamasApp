@@ -90,7 +90,7 @@ const ProfileScreen = () => {
       formData.append('mm_kelurahan', user.village?.id);
       formData.append('mm_address', user.mm_address);
       formData.append('mm_pass', user.mm_pass);
-      formData.append('mm_phone', user.mm_phone);
+      formData.append('mm_phone', user.mm_phone) 
       console.log('formData', formData);
       const response = await AuthAction.updateProfile(formData);
       await getPersonalInfo();
