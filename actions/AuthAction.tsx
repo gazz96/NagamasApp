@@ -17,6 +17,12 @@ const AuthAction = {
     },
     me: async() => {
         const token = await AsyncStorage.getItem('userToken');
+        
+        if(!token) 
+        {
+            return {}
+        }
+
         const response = await Api.post('/me', {
             'token': token
         }, {

@@ -4,7 +4,7 @@ import ScreenWrapper from '../components/ScreenWrapper'
 import { ActivityIndicator, Appbar, Button, Icon, List, TextInput } from 'react-native-paper'
 import { ScrollView } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { useIsFocused, useNavigation } from '@react-navigation/native'
+import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native'
 import OrderAction from '../actions/OrderAction'
 import Rp from '../components/Rp'
 import AuthAction from '../actions/AuthAction'
@@ -104,6 +104,7 @@ const CartScreen = () => {
     setIsLoading(true)
     try {
       const response = await OrderAction.cart();
+      console.log('getCarts', response);
       setCarts(response?.data?.items)
     }
     catch (error) {
@@ -266,6 +267,7 @@ const CartScreen = () => {
     setIsLoading(true)
     try {
       const checkoutResponse = await OrderAction.checkout(checkoutFormData());
+      await  getPersonalInfo();
       console.log('checkoutResponse', checkoutResponse);
       Toast.show({
         text1: 'Berhasil melakukan checkout'
@@ -339,9 +341,11 @@ const CartScreen = () => {
       <BottomSheetModalProvider>
         <ScreenWrapper style={{ flex: 1 }}>
 
-          <View style={{ borderBottomWidth: 1, borderBlockColor: '#eee', paddingBottom: 8 }}>
+          {
+            user?.id ?
+            <View style={{ borderBottomWidth: 1, borderBlockColor: '#eee', paddingBottom: 8 }}>
             <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
-
+              
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Text style={{ fontSize: 14, color: '#222', fontWeight: 'bold' }}>Diantar ke</Text>
                 <TouchableOpacity onPress={() => {
@@ -364,7 +368,9 @@ const CartScreen = () => {
                   onChangeText={(text) => setNote(text)}
                   value={note}/> */}
             </View>
-          </View>
+          </View> : <></>
+          }
+          
 
 
           <Gap height={8} />
@@ -442,9 +448,7 @@ const CartScreen = () => {
                   value={expeditionId}
                   onSelect={(id) => {
                     setExpeditionId(id)
-                    setExpedition(
-                      expeditions.find((item) => item.id == id) 
-                    )
+                    setExpedition(expeditions.find((item) => item?.id == id))
                   }}
                 />
 

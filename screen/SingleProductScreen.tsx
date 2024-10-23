@@ -42,6 +42,7 @@ const SingleProductScreen = () => {
         setIsLoading(true)
         try {
             const response = await OrderAction.addToCart(product?.id);
+            console.log('response', response);
             setVisible(true);
             // Toast.show({
             //     position: 'bottom',
