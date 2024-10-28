@@ -33,7 +33,6 @@ const CartScreen = () => {
     mm_kecamatan: 0,
     mm_kelurahan: 0,
     mm_address: "",
-    mm_pass: "",
     province: {},
     district: {},
     regency: {},
@@ -250,15 +249,15 @@ const CartScreen = () => {
 
   const checkoutFormData = () => {
     const formData = new FormData();
-    formData.append('so_cust_email', user?.id);
-    formData.append('so_cust_name', user.mm_name);
-    formData.append('so_cust_phone', user.mm_phone);
-    formData.append('so_cust_address', user.mm_address);
-    formData.append('so_cust_add_prov', user.mm_prov);
-    formData.append('so_cust_add_kel', user.mm_kelurahan);
+    // formData.append('so_cust_email', user?.id);
+    // formData.append('so_cust_name', user.mm_name);
+    // formData.append('so_cust_phone', user.mm_phone);
+    // formData.append('so_cust_address', user.mm_address);
+    // formData.append('so_cust_add_prov', user.mm_prov);
+    // formData.append('so_cust_add_kel', user.mm_kelurahan);
     // formData.append('so_ship_id', expedition.id);
     formData.append('so_ship_id', expedition?.id);
-    console.log('checkoutFormData', formData);
+    // console.log('checkoutFormData', formData);
     return formData;
   }
 
@@ -266,7 +265,7 @@ const CartScreen = () => {
   const doCheckout = async () => {
 
 
-    if(!user?.id) {
+    if (!user?.id) {
       navigation.navigate('Login');
     }
 
@@ -311,7 +310,7 @@ const CartScreen = () => {
     }
   }
 
-  const getExpedition = async() => {
+  const getExpedition = async () => {
     setIsLoading(true)
     try {
       const response = await ExpeditionAction.list();
@@ -320,14 +319,53 @@ const CartScreen = () => {
         item.label = item.expd_name;
         return item;
       }))
-      if((response?.data).length > 0)
-      {
+      if ((response?.data).length > 0) {
         setExpedition(response?.data[0])
       }
     }
     catch (error) {
     }
     finally {
+      setIsLoading(false);
+    }
+  }
+
+  const updateProfile = async () => {
+    setIsLoading(true)
+    try {
+      const formData = new FormData();
+      formData.append('mm_name', user.mm_name);
+      formData.append('mm_kelurahan', user.village?.id);
+      formData.append('mm_address', user.mm_address);
+      formData.append('mm_phone', user.mm_phone)
+      const response = await AuthAction.updateProfile(formData);
+      await getPersonalInfo();
+      Toast.show({
+        text1: 'Berhasil disimpan'
+      })
+
+    }
+    catch (error) {
+      if (error.response) {
+        console.log('error.esponse');
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+        InvalidFormValidation(error.response.data.errors);
+        
+      } else if (error.request) {
+        console.log('error.request');
+        console.log(error.request);
+      } else {
+        console.log('error.message');
+        console.log('Error', error.message);
+        Toast.show({
+          text1: 'Terjadi Kesalahan'
+        })
+      }
+    }
+    finally {
+      bottomSheetModalRef?.current?.close()
       setIsLoading(false);
     }
   }
@@ -351,34 +389,42 @@ const CartScreen = () => {
 
           {
             user?.id ?
-            <View style={{ borderBottomWidth: 1, borderBlockColor: '#eee', paddingBottom: 8 }}>
-            <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
-              
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Text style={{ fontSize: 14, color: '#222', fontWeight: 'bold' }}>Diantar ke</Text>
-                <TouchableOpacity onPress={() => {
-                 handlePresentModalPress();
-                }}>
-                  <Text style={{ fontSize: 10, color: '#222', fontWeight: 'bold' }}>Ubah Profile</Text>
-                </TouchableOpacity>
-              </View>
-              <Gap height={8} />
-              <View>
-                <Text style={{ fontSize: 12, color: '#222' }}>{user?.mm_name}</Text>
-                <Text style={{ fontSize: 12 }} numberOfLines={1}>{user?.mm_address}</Text>
-                <Text style={{ fontSize: 12 }}>{user?.mm_phone}</Text>
-                {
-                  expedition?.expd_name ? <Text style={{ fontSize: 12, fontWeight: 'bold', color: '#222' }}>Kurir {expedition?.expd_name}</Text> : <></>
-                }
-              </View>
-              <Gap height={8} />
-              {/* <TextInput mode='outlined' placeholder='Tambah Catatan atau Instruksi'
+              <View style={{ borderBottomWidth: 1, borderBlockColor: '#eee', paddingBottom: 8 }}>
+                <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
+
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Text style={{ fontSize: 14, color: '#222', fontWeight: 'bold' }}>Diantar ke</Text>
+                    <TouchableOpacity onPress={() => {
+                      handlePresentModalPress();
+                    }}>
+                      <Text style={{ fontSize: 10, color: '#222', fontWeight: 'bold' }}>Ubah Profile</Text>
+                    </TouchableOpacity>
+                  </View>
+
+                  <Gap height={8} />
+                  <View>
+                    <TextInput
+                      mode="flat"
+                      label="Kurir"
+                      value={expedition?.expd_name}
+                      onFocus={handleSelectExpedition}
+                    />
+                    <Gap height={8} />
+                    <Text style={{ fontSize: 12, color: '#222' }}>{user?.mm_name}</Text>
+                    <Text style={{ fontSize: 12 }} numberOfLines={1}>{user?.mm_address}</Text>
+                    <Text style={{ fontSize: 12 }}>{user?.mm_phone}</Text>
+
+
+
+                  </View>
+                  <Gap height={8} />
+                  {/* <TextInput mode='outlined' placeholder='Tambah Catatan atau Instruksi'
                   onChangeText={(text) => setNote(text)}
                   value={note}/> */}
-            </View>
-          </View> : <></>
+                </View>
+              </View> : <></>
           }
-          
+
 
 
           <Gap height={8} />
@@ -442,14 +488,7 @@ const CartScreen = () => {
             <BottomSheetView style={styles.contentContainer}>
 
 
-              <TextInput
-                  mode="flat"
-                  label="Kurir"
-                  value={expedition?.expd_name}
-                  onFocus={handleSelectExpedition}
-                />
 
-              <Gap height={8} />
 
               <TextInput
                 mode="flat"
@@ -466,13 +505,14 @@ const CartScreen = () => {
                 value={user?.mm_name}
               />
               <Gap height={8} />
-              <TextInput
+              
+              {/* <TextInput
                 mode="flat"
                 label="Provinsi"
                 value={user.province?.name}
                 onFocus={handleSelectProvince}
               />
-              <Gap height={8} />
+              <Gap height={8} /> */}
 
               <TextInput
                 mode="flat"
@@ -494,8 +534,8 @@ const CartScreen = () => {
               />
               <Gap height={8} />
               <Button mode='contained' onPress={() => {
-                updateShippingInformation();
-              }}>Rubah</Button>
+                updateProfile()
+              }}>Update Profile</Button>
             </BottomSheetView>
 
           </View>
