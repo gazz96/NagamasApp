@@ -264,11 +264,15 @@ const CartScreen = () => {
 
 
   const doCheckout = async () => {
+
+
+    if(!user?.id) {
+      navigation.navigate('Login');
+    }
+
     setIsLoading(true)
     try {
       const checkoutResponse = await OrderAction.checkout(checkoutFormData());
-      await  getPersonalInfo();
-      console.log('checkoutResponse', checkoutResponse);
       Toast.show({
         text1: 'Berhasil melakukan checkout'
       })
@@ -316,6 +320,10 @@ const CartScreen = () => {
         item.label = item.expd_name;
         return item;
       }))
+      if((response?.data).length > 0)
+      {
+        setExpedition(response?.data[0])
+      }
     }
     catch (error) {
     }
@@ -349,9 +357,9 @@ const CartScreen = () => {
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Text style={{ fontSize: 14, color: '#222', fontWeight: 'bold' }}>Diantar ke</Text>
                 <TouchableOpacity onPress={() => {
-                  handlePresentModalPress();
+                 handlePresentModalPress();
                 }}>
-                  <Text style={{ fontSize: 10, color: '#222', fontWeight: 'bold' }}>Ubah Pengiriman</Text>
+                  <Text style={{ fontSize: 10, color: '#222', fontWeight: 'bold' }}>Ubah Profile</Text>
                 </TouchableOpacity>
               </View>
               <Gap height={8} />
@@ -434,22 +442,11 @@ const CartScreen = () => {
             <BottomSheetView style={styles.contentContainer}>
 
 
-              {/* <TextInput
+              <TextInput
                   mode="flat"
                   label="Kurir"
                   value={expedition?.expd_name}
                   onFocus={handleSelectExpedition}
-                /> */}
-
-              <Dropdown
-                  label="Kurir"
-                  placeholder="Pilih Kurir"
-                  options={expeditions}
-                  value={expeditionId}
-                  onSelect={(id) => {
-                    setExpeditionId(id)
-                    setExpedition(expeditions.find((item) => item?.id == id))
-                  }}
                 />
 
               <Gap height={8} />
