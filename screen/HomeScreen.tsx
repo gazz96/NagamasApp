@@ -26,7 +26,7 @@ const HomeScreen = () => {
                     <Searchbar  
                         placeholder="Cari"
                         mode="bar"
-                        style={{width: '83%'}}
+                        style={{width: '83%', backgroundColor: '#eee'}}
                         onFocus={() => {
                             navigation.navigate('Search Product')
                         }}

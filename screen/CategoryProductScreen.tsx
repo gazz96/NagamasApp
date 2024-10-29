@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Appbar, Searchbar } from 'react-native-paper'
+import { Appbar, Searchbar, useTheme } from 'react-native-paper'
 import { Image } from 'react-native-paper/lib/typescript/components/Avatar/Avatar'
 import ScreenWrapper from '../components/ScreenWrapper'
 import ProductListBlock from '../components/ProductListBlock'
@@ -11,7 +11,7 @@ import Gap from '../components/Gap'
 
 
 const CategoryProductScreen = () => {
-
+    const theme = useTheme()
     const navigation = useNavigation();
     const route = useRoute();
     const isFocused = useIsFocused();
@@ -29,9 +29,9 @@ const CategoryProductScreen = () => {
                 <Appbar.Header mode='small'>
                     <Appbar.BackAction onPress={() => navigation.goBack()} />
                     <Searchbar
-                        placeholder="Search"
+                        placeholder="Cari..."
                         mode="bar"
-                        style={{ width: '83%' }}
+                        style={{ width: '83%', backgroundColor: '#eee'  }}
                         value={search}
                         onChangeText={(text) => setSearch(text)}
                     />

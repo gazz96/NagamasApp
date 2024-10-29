@@ -7,7 +7,7 @@
 
 import React, { useEffect, useState } from 'react';
 
-import { Text, BottomNavigation, ActivityIndicator } from 'react-native-paper';
+import { Text, BottomNavigation, ActivityIndicator, useTheme } from 'react-native-paper';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { CommonActions, useIsFocused, useNavigation } from '@react-navigation/native';
 
@@ -82,17 +82,21 @@ const ProfileStackScreen = () => {
 }
 
 const HomeTab = () => {
-
+  const theme = useTheme();
   return (
 
     <Tab.Navigator
+
       initialRouteName='Tab.Home'
       screenOptions={{
         headerShown: false,
       }}
-
+      
       tabBar={({ navigation, state, descriptors, insets }) => (
         <BottomNavigation.Bar
+          style={{backgroundColor: theme.colors.surface, borderTopColor: '#EEE', borderTopWidth: 1}}
+          activeIndicatorStyle={{backgroundColor: '#ffffff'}}
+          activeColor={theme.colors.primary}
           navigationState={state}
           safeAreaInsets={insets}
           onTabPress={({ route, preventDefault }) => {

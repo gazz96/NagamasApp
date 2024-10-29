@@ -1,11 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { ActivityIndicator } from 'react-native-paper'
+import { ActivityIndicator, useTheme } from 'react-native-paper'
 
 
 const Splash = () => {
+  const theme = useTheme();
   return (
-    <View style={styles.container}>
+    <View style={styles.container(theme.colors.surface)}>
       <ActivityIndicator size={50}/>
     </View>
   )
@@ -14,9 +15,12 @@ const Splash = () => {
 export default Splash
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
+    container: (color) => {
+        return {
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: color
+        }
     }
 })

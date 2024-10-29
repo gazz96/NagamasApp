@@ -149,13 +149,13 @@ const RegisterScreen = () => {
                 />
                 <Gap height={8} />
 
-                <TextInput
+                {/* <TextInput
                     mode="flat"
                     label="Provinsi"
                     value={province.name}
                     onFocus={handleSelectProvince}
                 />
-                <Gap height={8} />
+                <Gap height={8} /> */}
 
                 <TextInput
                     mode="flat"
@@ -169,8 +169,7 @@ const RegisterScreen = () => {
 
                 <TextInput
                     mode="flat"
-                    label="Alamat"
-                    right={<TextInput.Affix text="/15" />}
+                    label="Alamat (Jalan/Nomor. Rumah-Kode/Pos)"
                     onChangeText={(text) => handleChangeInput('mm_address', text)}
                     multiline={true}
                     numberOfLines={3}

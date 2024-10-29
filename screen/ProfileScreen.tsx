@@ -159,13 +159,13 @@ const ProfileScreen = () => {
               />
               <Gap height={8} />
 
-              <TextInput
+              {/* <TextInput
                 mode="flat"
                 label="Provinsi"
                 value={user.province?.name}
                 onFocus={handleSelectProvince}
               />
-              <Gap height={8} />
+              <Gap height={8} /> */}
 
               <TextInput
                 mode="flat"
